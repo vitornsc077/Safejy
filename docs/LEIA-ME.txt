@@ -1,11 +1,19 @@
 SAFEJY — Landing page
 
+ESTRUTURA DE PASTAS
+- index.html: página principal da landing page.
+- assets/css/styles.css: temas, identidade visual e layout responsivo.
+- assets/js/script.js: tradução em inglês, tema e navegação interna.
+- assets/images/: logos, imagens das notícias e favicon.
+- dist/SAFEJY.html: versão que reúne todo o projeto em um único arquivo autônomo.
+- docs/LEIA-ME.txt: este documento de apoio.
+
 COMO ABRIR
 Abra index.html no Chrome, Edge, Safari ou Firefox.
-Mantenha todos os arquivos da pasta juntos, incluindo as três fotos das notícias.
-A versão SAFEJY.html reúne tudo em um único arquivo.
+Mantenha a pasta assets/ junto com index.html.
+A versão dist/SAFEJY.html reúne tudo em um único arquivo.
 Não é necessário instalar nada. A página funciona offline.
-As fotos das notícias estão incorporadas à versão SAFEJY.html e funcionam offline.
+As fotos das notícias estão incorporadas à versão dist/SAFEJY.html e funcionam offline.
 Os links para ler as matérias originais exigem conexão com a internet.
 
 COMO USAR
@@ -31,9 +39,9 @@ https://www.ssp.sp.gov.br/noticia/60440
 
 EDIÇÃO
 index.html: conteúdo em português e estrutura.
-styles.css: temas, identidade visual e layout responsivo.
-script.js: tradução em inglês, tema e navegação interna.
-logo-safejy.png: logo fornecida pela equipe com fundo transparente.
+assets/css/styles.css: temas, identidade visual e layout responsivo.
+assets/js/script.js: tradução em inglês, tema e navegação interna.
+assets/images/logo-safejy.png: logo fornecida pela equipe com fundo transparente.
 
 IMAGENS DAS NOTÍCIAS
 As fotos vêm das respectivas publicações. Os créditos estão abaixo das imagens.
