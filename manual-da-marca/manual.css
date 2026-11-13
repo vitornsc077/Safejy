@@ -220,6 +220,7 @@ pre code { font-size: 13px; }
   .swatches span, .swatches code { grid-column: 2; }
 }
 @media print {
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .chapter, .note { page-break-before: always; }
   .cover { min-height: auto; height: 100vh; }
 }

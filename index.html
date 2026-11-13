@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,82 +10,107 @@
       if (localStorage.getItem("safejy-theme") === "dark") {
         document.documentElement.dataset.theme = "dark";
       }
-    } catch (error) {}
+      if (localStorage.getItem("safejy-lang") === "en") {
+        document.documentElement.lang = "en";
+      }
+    } catch (error) { }
   </script>
-  <meta name="description" content="SAFEJY: saiba se sua rota em São Paulo passa por áreas de risco. Conheça nossa proposta e as notícias que mostram o problema.">
+  <meta name="description"
+    content="SAFEJY: veja se sua rota em São Paulo passa por áreas de risco antes de sair. Apresentação do projeto acadêmico.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SAFEJY">
+  <meta property="og:title" content="SAFEJY — Planeje seu caminho.">
+  <meta property="og:description"
+    content="O GPS mostra o caminho mais rápido. A SAFEJY mostra se ele passa por áreas de risco antes de você sair.">
+  <meta property="og:image" content="assets/images/logo-safejy.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SAFEJY — Planeje seu caminho.">
+  <meta name="twitter:description"
+    content="O GPS mostra o caminho mais rápido. A SAFEJY mostra se ele passa por áreas de risco antes de você sair.">
+  <meta name="twitter:image" content="assets/images/logo-safejy.png">
   <title>SAFEJY — Planeje seu caminho.</title>
-  <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/css/styles.css">
-  <script src="assets/js/script.js" defer></script>
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.png?v=2">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.png?v=2">
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg?v=2">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png?v=2">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Gelasio:ital,wght@0,400;0,500;0,600;0,700;1,600&family=IBM+Plex+Mono:wght@500;600&family=Noto+Serif:wght@400;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css?v=13">
+  <script src="assets/js/script.js?v=13" defer></script>
 </head>
+
 <body>
   <a class="skip" href="#inicio" data-i18n="skip">Pular para o conteúdo</a>
 
   <header class="header">
     <a href="#inicio" class="brand" aria-label="SAFEJY — início">
       <span class="brand-symbol" aria-hidden="true">
-        <img src="assets/images/logo-safejy.png" alt="" width="1024" height="1024">
+        <img src="assets/images/logo-icon.png" alt="SAFEJY" width="40" height="26">
       </span>
       <span class="brand-name">safejy</span>
     </a>
 
-    <nav aria-label="Principal">
-      <a href="#cenario" data-i18n="navProblem">Por que existimos</a>
-      <a href="#como" data-i18n="navHow">A solução</a>
-      <a href="#publico" data-i18n="navWho">Para quem</a>
+    <nav id="main-nav" aria-label="Principal">
+      <a href="#inicio" aria-current="page" data-i18n="navStart">01 Início</a>
+      <a href="#problema" data-i18n="navProblem">02 Problema</a>
+      <a href="#como-funciona" data-i18n="navHow">03 Solução</a>
+      <a href="#diferenciais" data-i18n="navDiff">04 Diferenciais</a>
+      <a href="#publico" data-i18n="navWho">05 Público</a>
+      <a href="#visao" data-i18n="navVision">06 Visão</a>
     </nav>
 
     <div class="header-actions">
       <div class="languages" role="group" aria-label="Language / Idioma">
-        <button data-lang="pt" aria-pressed="true" lang="pt-BR">PT</button>
+        <button data-lang="pt" aria-pressed="true" lang="pt-BR" aria-label="Mudar para português">PT</button>
         <span>/</span>
-        <button data-lang="en" aria-pressed="false" lang="en">EN</button>
+        <button data-lang="en" aria-pressed="false" lang="en" aria-label="Switch to English">EN</button>
       </div>
-      <button id="theme-toggle" class="theme-toggle" aria-label="Ativar tema escuro" title="Ativar tema escuro" aria-pressed="false">
+      <button id="theme-toggle" class="theme-toggle" aria-label="Ativar tema escuro" title="Ativar tema escuro"
+        aria-pressed="false">
         <svg class="moon-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M20.5 14A8.6 8.6 0 0 1 10 3.5 8.8 8.8 0 1 0 20.5 14Z"/>
+          <path d="M20.5 14A8.6 8.6 0 0 1 10 3.5 8.8 8.8 0 1 0 20.5 14Z" />
         </svg>
         <svg class="sun-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="12" cy="12" r="4"/>
-          <path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/>
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5" />
         </svg>
-        <span id="theme-label">Escuro</span>
+        <span id="theme-label">Modo escuro</span>
+      </button>
+      <button id="menu-toggle" class="menu-toggle" aria-expanded="false" aria-controls="main-nav"
+        aria-label="Abrir menu de navegação" title="Abrir menu de navegação">
+        <span class="menu-bar"></span>
+        <span class="menu-bar"></span>
+        <span class="menu-bar"></span>
       </button>
     </div>
   </header>
 
   <main>
-    <section id="inicio" class="slide hero">
-      <aside class="purpose-strip">
-        <div>
-          <p class="purpose-label" data-i18n="purposeLabel">POR QUE EXISTIMOS</p>
-          <p data-i18n="purposeSummary">Quem chega a São Paulo precisa de informação para circular.</p>
-        </div>
-        <a class="text-link" href="#cenario">
-          <span data-i18n="purposeLink">Notícias e fontes</span>
-          <span aria-hidden="true">↓</span>
-        </a>
-      </aside>
-
-      <div class="hero-grid">
-        <div class="hero-copy">
+    <!-- SLIDE 01: GANCHO -->
+    <section id="inicio" class="slide hero pitch-section">
+      <div class="hero-stage">
+        <div class="hero-copy hero-single">
           <p class="eyebrow">
             <span class="tiny-cross">+</span>
-            <span data-i18n="heroEyebrow">SEGURANÇA NO SEU TRAJETO</span>
+            <span data-i18n="heroEyebrow">01 / O GANCHO</span>
           </p>
           <h1>
             <span data-i18n="heroTitle1">Veja os riscos.</span><br>
-            <span data-i18n="heroTitle2">Planeje seu</span><br>
+            <span data-i18n="heroTitle2">Planeje seu</span>
             <em data-i18n="heroTitle3">caminho.</em>
           </h1>
-          <p class="hero-description" data-i18n="heroDescription">Um app em desenvolvimento para mostrar se sua rota em São Paulo passa por áreas de risco.</p>
+          <p class="hero-description" data-i18n="heroDescription">O GPS mostra o caminho mais rápido. A SAFEJY mostra se ele passa por áreas de risco antes de você sair.</p>
           <div class="hero-ctas">
             <a class="button primary" href="#demo" id="try-demo">
-              <span data-i18n="try">Ver análise da rota</span>
-              <span aria-hidden="true">↗</span>
+              <span data-i18n="try">Simular rota agora</span>
+              <span aria-hidden="true">↓</span>
             </a>
-            <a class="text-link" href="#cenario">
-              <span data-i18n="understand">Por que a SAFEJY?</span>
+            <a class="text-link" href="#problema">
+              <span data-i18n="understand">Ver o problema</span>
               <span aria-hidden="true">↓</span>
             </a>
           </div>
@@ -92,8 +118,142 @@
             <span class="location-icon" aria-hidden="true">⌖</span>
             <span>São Paulo, Brasil</span>
             <span class="divider"></span>
-            <span data-i18n="academic">Projeto acadêmico</span>
+            <span data-i18n="publicUtility">100% Gratuito · Utilidade Pública</span>
+            <span class="divider"></span>
+            <span data-i18n="academic">Projeto Acadêmico</span>
           </div>
+        </div>
+
+        <figure class="hero-media" aria-hidden="true">
+          <img src="assets/images/hero-sp.png?v=2" alt="" width="640" height="480" decoding="async">
+        </figure>
+      </div>
+
+      <div class="section-bottom">
+        <span data-i18n="heroBottom">SAIBA ONDE PASSAR ANTES DE SAIR.</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 02: PROBLEMA E PROVA EM DADOS -->
+    <section id="problema" class="slide scenario pitch-section">
+      <div class="section-heading">
+        <p class="eyebrow" data-i18n="problemEyebrow">02 / O PROBLEMA E OS DADOS</p>
+        <div class="heading-row">
+          <h2 data-i18n="problemTitle">Quem chega a São Paulo escolhe a rota às cegas.</h2>
+          <p data-i18n="problemDescription">Apps comuns calculam apenas trânsito. A SAFEJY cruza o trajeto com dados
+            públicos de segurança.</p>
+        </div>
+      </div>
+
+      <div class="news-grid">
+        <a class="article featured-pastel"
+          href="https://www.cnnbrasil.com.br/nacional/sudeste/sp/sao-paulo-tem-185-de-todos-os-roubos-e-furtos-de-celulares-do-brasil/"
+          target="_blank" rel="noopener noreferrer">
+          <div class="article-meta">
+            <span>CNN BRASIL / SSP</span>
+            <time datetime="2025-07-24">24.07.2025</time>
+          </div>
+          <figure class="article-media">
+            <img src="assets/images/news-cnn.jpg" alt="Imagem de apoio: segurança pública em São Paulo"
+              data-alt-pt="Imagem de apoio: segurança pública em São Paulo"
+              data-alt-en="Supporting image: public security in São Paulo">
+          </figure>
+          <div class="big-stat" data-i18n="statValue">18,5<span>%</span></div>
+          <h3 data-i18n="statDescription">dos roubos e furtos de celulares do Brasil em 2024 ocorreram na cidade de São
+            Paulo.</h3>
+          <span class="article-link"><span data-i18n="readSource">Ver fonte</span> <span
+              aria-hidden="true">↗</span></span>
+        </a>
+
+        <a class="article"
+          href="https://www.fecap.br/2026/02/09/pesquisa-da-fecap-revela-reducao-de-905-nos-roubos-e-furtos-de-celulares-em-sp-em-2025/"
+          target="_blank" rel="noopener noreferrer">
+          <div class="article-meta">
+            <span>ESTUDO FECAP</span>
+            <time datetime="2026-02-09">09.02.2026</time>
+          </div>
+          <figure class="article-media">
+            <img src="assets/images/news-fecap.jpg" alt="Imagem ilustrativa do estudo FECAP"
+              data-alt-pt="Imagem ilustrativa do estudo FECAP" data-alt-en="Illustrative image of the FECAP study">
+          </figure>
+          <div class="stat-mono-tag">FECAP · 2025</div>
+          <h3 data-i18n="news2Title">Estudo mapeia vias e bairros com maior concentração.</h3>
+          <p data-i18n="news2Description">Mesmo com recuo de 9,05% nos índices de 2025, os registros seguem concentrados
+            em pontos específicos.</p>
+          <span class="article-link"><span data-i18n="readStudy">Ver estudo</span> <span
+              aria-hidden="true">↗</span></span>
+        </a>
+
+        <a class="article" href="https://www.ssp.sp.gov.br/noticia/62598" target="_blank" rel="noopener noreferrer">
+          <div class="article-meta">
+            <span>SSP-SP</span>
+            <time datetime="2026-06-01">01.06.2026</time>
+          </div>
+          <figure class="article-media">
+            <img src="assets/images/news-ssp.jpg" alt="Imagem oficial da Secretaria da Segurança Pública de São Paulo"
+              data-alt-pt="Imagem oficial da Secretaria da Segurança Pública de São Paulo"
+              data-alt-en="Official image from the Public Security Secretariat of São Paulo">
+          </figure>
+          <div class="stat-mono-tag" data-i18n="news3Badge">27,4 MIL</div>
+          <h3 data-i18n="news3Title">roubos de celulares no estado em quatro meses.</h3>
+          <p data-i18n="news3Description">Ocorrências registradas entre janeiro e abril de 2026 no estado de São Paulo.
+          </p>
+          <span class="article-link"><span data-i18n="readSource">Ver fonte</span> <span
+              aria-hidden="true">↗</span></span>
+        </a>
+      </div>
+
+      <p class="source-note" data-i18n="sourceNote">Fontes oficiais com data e link direto. Os relatos contextualizam o
+        problema real; o mapa usa simulação ilustrativa.</p>
+    </section>
+
+    <!-- SLIDE 03: COMO FUNCIONA EM 3 PASSOS + SIMULADOR -->
+    <section id="como-funciona" class="slide solution pitch-section">
+      <div class="section-heading">
+        <p class="eyebrow" data-i18n="solutionEyebrow">03 / A SOLUÇÃO EM 3 PASSOS</p>
+        <div class="heading-row">
+          <h2 data-i18n="solutionTitle">Informação antes de seguir.</h2>
+          <p data-i18n="solutionDescription">Simples, visual e antes de você colocar o pé na rua.</p>
+        </div>
+      </div>
+
+      <div class="solution-grid">
+        <div class="steps steps-vertical">
+          <article>
+            <div class="step-top">
+              <span>01</span>
+              <svg viewBox="0 0 48 48" aria-hidden="true">
+                <circle cx="24" cy="20" r="7" />
+                <path d="M39 20c0 12-15 24-15 24S9 32 9 20a15 15 0 0 1 30 0Z" />
+              </svg>
+            </div>
+            <h3 data-i18n="step1Title">Informe seu trajeto</h3>
+            <p data-i18n="step1Description">Escolha origem e destino em São Paulo.</p>
+          </article>
+
+          <article>
+            <div class="step-top">
+              <span>02</span>
+              <svg class="red-icon" viewBox="0 0 48 48" aria-hidden="true">
+                <path d="m24 5 20 36H4Z" />
+                <path d="M24 17v11m0 5v2" />
+              </svg>
+            </div>
+            <h3 data-i18n="step2Title">Veja as áreas de risco</h3>
+            <p data-i18n="step2Description">Identifique trechos com alerta no mapa.</p>
+          </article>
+
+          <article>
+            <div class="step-top">
+              <span>03</span>
+              <svg viewBox="0 0 48 48" aria-hidden="true">
+                <path d="M24 4 40 10v13c0 10-7 17-16 21-9-4-16-11-16-21V10l16-6Z" />
+                <path d="m16 24 6 6 11-12" />
+              </svg>
+            </div>
+            <h3 data-i18n="step3Title">Escolha como seguir</h3>
+            <p data-i18n="step3Description">Compare a rota direta com o desvio sugerido.</p>
+          </article>
         </div>
 
         <div class="demo" id="demo" tabindex="-1">
@@ -102,272 +262,276 @@
               <span class="red-dot"></span>
               <strong data-i18n="mapTitle">Segurança da rota</strong>
             </div>
-            <span class="outline-label" data-i18n="simulation">SIMULAÇÃO</span>
+            <span class="outline-label" data-i18n="simulation">SIMULAÇÃO INTERATIVA</span>
+          </div>
+
+          <div class="simulator-panel" role="region" aria-label="Controles do simulador de rota">
+            <div class="sim-fixed-route">
+              <span class="sim-label" data-i18n="demoRouteLabel">ROTA DEMONSTRATIVA</span>
+              <div class="sim-fixed-pill" data-i18n="demoRouteValue">✈️ Aeroporto de Congonhas (A) → 🏁 Avenida Paulista
+                · MASP (B)</div>
+            </div>
+
+            <div class="sim-toggle-row">
+              <div class="sim-views-group" role="group" aria-label="Visualização da rota">
+                <button type="button" class="sim-view-btn is-active" data-sim-view="both">
+                  <span data-i18n="simViewBoth">Comparar Ambas</span>
+                </button>
+                <button type="button" class="sim-view-btn" data-sim-view="safe">
+                  <span data-i18n="simViewSafe">🛡️ Desvio Seguro</span>
+                </button>
+                <button type="button" class="sim-view-btn" data-sim-view="direct">
+                  <span data-i18n="simViewDirect">⚠️ Rota com Risco</span>
+                </button>
+              </div>
+              <button type="button" id="btn-contrast-mode" class="sim-contrast-btn" aria-pressed="false"
+                title="Alternar modo de alto contraste para daltônicos">
+                <span aria-hidden="true">👁️</span>
+                <span data-i18n="contrastMode">Contraste</span>
+              </button>
+            </div>
           </div>
 
           <div class="map-canvas">
             <div class="map-caption">
-              <span data-i18n="mapConcept">MAPA ILUSTRATIVO</span>
-              <span>N ↑</span>
+              <span data-i18n="mapConcept">MAPA DINÂMICO</span>
+              <span>SÃO PAULO</span>
             </div>
-            <svg class="city-map" viewBox="0 0 600 440" role="img" aria-labelledby="map-description">
-              <title id="map-description" data-i18n="mapAlt">Mapa fictício com uma rota entre A e B que atravessa uma zona de risco em vermelho.</title>
+            <svg class="city-map" id="safejy-city-map" viewBox="0 0 600 440" role="img" aria-labelledby="map-title-desc"
+              xmlns="http://www.w3.org/2000/svg">
+              <title id="map-title-desc" data-i18n="mapAlt">Mapa interativo ilustrando rotas em São Paulo e zonas de
+                risco demarcadas.</title>
               <defs>
-                <pattern id="blocks" width="90" height="78" patternTransform="rotate(-23)" patternUnits="userSpaceOnUse">
-                  <rect width="90" height="78" fill="var(--map-base)"/>
-                  <rect x="8" y="8" width="72" height="60" rx="5" fill="var(--map-block)" stroke="var(--map-edge)" stroke-width="1"/>
-                  <path d="M30 9v58M58 9v58M9 37h70" stroke="var(--map-inner)" fill="none"/>
+                <pattern id="blocks" width="76" height="76" patternUnits="userSpaceOnUse"
+                  patternTransform="rotate(-23)">
+                  <rect width="76" height="76" fill="var(--map-base)" />
+                  <rect x="5" y="5" width="28" height="28" rx="6" fill="var(--map-block)" stroke="var(--map-edge)" />
+                  <rect x="37" y="5" width="34" height="28" rx="6" fill="var(--map-block)" stroke="var(--map-edge)" />
+                  <rect x="5" y="37" width="66" height="34" rx="6" fill="var(--map-block)" stroke="var(--map-edge)" />
+                  <path d="M30 9v58M58 9v58M9 37h70" stroke="var(--map-inner)" fill="none" />
                 </pattern>
                 <pattern id="hatch" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
-                  <path d="M0 0v9" stroke="var(--risk)" stroke-opacity=".17" stroke-width="3"/>
+                  <path d="M0 0v9" stroke="var(--risk)" stroke-opacity=".3" stroke-width="3" />
                 </pattern>
               </defs>
-              <rect width="600" height="440" fill="url(#blocks)"/>
-              <path d="M-40 320Q100 220 225 430M450-20Q350 90 650 150" stroke="var(--map-park)" stroke-width="30" fill="none"/>
-              <path d="m-20 114 640 70M150-30 75 470M480-20 60 470M-20 370 640-95" stroke="var(--map-road)" stroke-width="16" fill="none"/>
-              <path d="m-20 114 640 70M150-30 75 470M480-20 60 470M-20 370 640-95" stroke="var(--map-road-line)" stroke-width="2" fill="none"/>
-              <path d="m218 122 150 16 67 113-90 84-150-61Z" fill="var(--map-risk-fill)" stroke="var(--risk)" stroke-opacity="1" stroke-width="1.5" stroke-dasharray="5 5"/>
-              <path d="m218 122 150 16 67 113-90 84-150-61Z" fill="url(#hatch)"/>
+              <rect width="600" height="440" fill="url(#blocks)" />
+              <path d="M-40 320Q100 220 225 430M450-20Q350 90 650 150" stroke="var(--map-park)" stroke-width="30"
+                fill="none" />
+              <path d="m-20 114 640 70M150-30 75 470M480-20 60 470M-20 370 640-95" stroke="var(--map-road)"
+                stroke-width="16" fill="none" />
+              <path d="m-20 114 640 70M150-30 75 470M480-20 60 470M-20 370 640-95" stroke="var(--map-road-line)"
+                stroke-width="2" fill="none" />
+
+              <g id="risk-polygon-1">
+                <path d="m218 122 150 16 67 113-90 84-150-61Z" fill="url(#hatch)" stroke="var(--risk)"
+                  stroke-width="1.8" stroke-dasharray="5 5" />
+              </g>
+
               <g fill="var(--map-tree)" opacity=".7">
-                <circle cx="448" cy="355" r="7"/>
-                <circle cx="468" cy="342" r="5"/>
-                <circle cx="465" cy="370" r="9"/>
-                <circle cx="486" cy="357" r="6"/>
-                <circle cx="518" cy="85" r="9"/>
-                <circle cx="538" cy="76" r="6"/>
+                <circle cx="448" cy="355" r="7" />
+                <circle cx="468" cy="365" r="9" />
+                <circle cx="488" cy="345" r="8" />
               </g>
-              <path id="assessed-route" d="M110 350 202 291 310 220 427 144 500 95" fill="none" stroke="var(--risk)" stroke-width="5" stroke-dasharray="8 8" stroke-linecap="round"/>
-              <g transform="translate(299 245)">
-                <rect x="-75" y="-17" width="150" height="34" rx="7" fill="var(--map-risk-label)" stroke="var(--risk)"/>
-                <text text-anchor="middle" y="5" fill="var(--risk-text)" font-size="14" font-weight="600" data-i18n="riskZone">⚠ Zona de risco</text>
+
+              <path id="svg-route-direct" class="animated-route route-danger-glow"
+                d="M 80 340 Q 220 280 270 210 T 490 110" stroke="var(--risk)" stroke-width="6" fill="none"
+                stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 6" />
+              <path id="svg-route-safe" class="animated-route"
+                d="M 80 340 C 145 410, 390 415, 430 325 S 485 180, 490 110" stroke="var(--green)" stroke-width="6"
+                fill="none" stroke-linecap="round" stroke-linejoin="round" />
+
+              <g id="risk-label-badge">
+                <rect x="215" y="132" width="170" height="26" rx="6" fill="var(--panel)" stroke="var(--risk)"
+                  stroke-width="1.5" />
+                <text x="300" y="149" text-anchor="middle" fill="var(--risk)" font-size="11" font-weight="700"
+                  data-i18n="riskZone">⚠ Zona de Risco Central</text>
               </g>
-              <circle cx="110" cy="350" r="20" fill="var(--route)" fill-opacity=".12"/>
-              <circle cx="110" cy="350" r="10" fill="var(--route)" stroke="var(--map-base)" stroke-width="4"/>
-              <text x="130" y="369" fill="var(--map-text)" font-size="12" data-i18n="origin">A · Origem</text>
-              <g transform="translate(500 95)">
-                <path d="M0 6C-5 0-14-8-14-17a14 14 0 0 1 28 0C14-8 5 0 0 6" fill="var(--map-pin)"/>
-                <circle cy="-17" r="5" fill="var(--map-pin-inner)"/>
+
+              <g id="svg-pin-a" transform="translate(80 340)">
+                <circle r="14" fill="var(--map-pin)" />
+                <circle r="6" fill="var(--map-pin-inner)" />
+                <rect x="-68" y="18" width="136" height="22" rx="6" fill="var(--panel)" stroke="var(--map-edge)"
+                  stroke-width="1.2" />
+                <text id="svg-label-a" x="0" y="33" text-anchor="middle" fill="var(--map-text)" font-size="11.5"
+                  font-weight="700">A · Congonhas</text>
               </g>
-              <text x="488" y="122" fill="var(--map-text)" font-size="12" data-i18n="destination">B · Destino</text>
-              <text x="28" y="407" fill="var(--map-muted)" font-size="10" letter-spacing="2">SAFEJY / CONCEPT 01</text>
+
+              <g id="svg-pin-b" transform="translate(490 110)">
+                <path d="M0 6C-5 0-14-8-14-17a14 14 0 0 1 28 0C14-8 5 0 0 6" fill="var(--map-pin)" />
+                <circle cy="-17" r="5" fill="var(--map-pin-inner)" />
+                <rect x="-68" y="10" width="136" height="22" rx="6" fill="var(--panel)" stroke="var(--map-edge)"
+                  stroke-width="1.2" />
+                <text id="svg-label-b" x="0" y="25" text-anchor="middle" fill="var(--map-text)" font-size="11.5"
+                  font-weight="700">B · Av. Paulista</text>
+              </g>
             </svg>
             <div class="map-legend">
               <span><i class="legend-risk"></i><span data-i18n="legendRisk">Zona de risco</span></span>
-              <span><i class="legend-route"></i><span data-i18n="legendRoute">Rota analisada</span></span>
+              <span><i class="legend-route direct-legend"></i><span data-i18n="legendRouteDirect">Rota direta (com
+                  alerta)</span></span>
+              <span><i class="legend-route safe-legend"></i><span data-i18n="legendRouteSafe">Desvio
+                  seguro</span></span>
             </div>
           </div>
 
           <div class="map-bottom">
-            <div class="risk-status">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="m12 3 10 18H2Z"/>
-                <path d="M12 9v5m0 3v1"/>
-              </svg>
-              <div>
-                <strong data-i18n="routeResult">Rota com risco</strong>
-                <p data-i18n="routeExplanation">Este trajeto passa por uma área de risco.</p>
+            <div class="sim-dual-status" id="sim-dual-status">
+              <div class="sim-status-card direct-card" id="sim-direct-card">
+                <div class="status-card-header">
+                  <span class="status-badge risk" id="sim-direct-badge" data-i18n="simBadgeRisk">⚠️ Rota Direta
+                    (Alerta)</span>
+                </div>
+                <p id="sim-direct-desc">Trajeto pela Av. 23 de Maio com trecho central de alta concentração de furtos de
+                  celular em semáforos (dados SSP/FECAP).</p>
+                <span class="status-tip" id="sim-direct-tip" data-i18n="simTipRisk">Recomendação: Mantenha vidros
+                  fechados e pertences fora de vista.</span>
+              </div>
+
+              <div class="sim-status-card safe-card" id="sim-safe-card">
+                <div class="status-card-header">
+                  <span class="status-badge safe" id="sim-safe-badge" data-i18n="simBadgeSafe">🛡️ Desvio Seguro
+                    SAFEJY</span>
+                </div>
+                <p id="sim-safe-desc">Desvio seguro sugerido através de vias expressas monitoradas com iluminação
+                  contínua e maior patrulhamento.</p>
+                <span class="status-tip safe" id="sim-safe-tip" data-i18n="simTipSafe">Recomendação: Rota recomendada
+                  para circular com tranquilidade.</span>
               </div>
             </div>
-            <p class="map-note" data-i18n="mapNote">Exemplo ilustrativo. Não representa o risco real das ruas.</p>
+            <div id="sim-aria-status" class="sr-only" role="status" aria-live="polite"></div>
+            <p class="map-note" data-i18n="mapNote" style="margin-top: 10px;">Simulação ilustrativa baseada em
+              relatórios oficiais de segurança pública em São Paulo.</p>
           </div>
         </div>
       </div>
-
-      <div class="section-bottom">
-        <span data-i18n="heroBottom">SAIBA ONDE PASSAR ANTES DE SAIR.</span>
-      </div>
     </section>
 
-    <section id="cenario" class="slide scenario">
+    <!-- SLIDE 04: DIFERENCIAIS -->
+    <section id="diferenciais" class="slide pitch-section">
       <div class="section-heading">
-        <p class="eyebrow" data-i18n="problemEyebrow">01 / NOSSO PROPÓSITO</p>
+        <p class="eyebrow" data-i18n="diffEyebrow">04 / POR QUE A SAFEJY</p>
         <div class="heading-row">
-          <h2 data-i18n="problemTitle">Por que existimos.</h2>
-          <p data-i18n="problemDescription">Para ajudar quem não conhece São Paulo a identificar riscos no trajeto antes de sair.</p>
+          <h2 data-i18n="diffTitle">Avaliamos trajetos, nunca estigmatizamos lugares.</h2>
+          <p data-i18n="diffDescription">Orientação de um Guia Local: calma, precisa e sem alarmismo.</p>
         </div>
       </div>
 
-      <p class="news-intro" data-i18n="newsIntro">Notícias e estudos que mostram o problema.</p>
+      <div class="diff-grid">
+        <article class="info-card">
+          <span class="eyebrow" data-i18n="diff1Tag">DADOS REAIS</span>
+          <h3 data-i18n="pillar1Title">Sem sensacionalismo</h3>
+          <p data-i18n="pillar1Desc">Dados oficiais da SSP e FECAP, sem tom policialesco.</p>
+        </article>
 
-      <div class="news-grid">
-        <a class="article featured" href="https://www.cnnbrasil.com.br/nacional/sudeste/sp/sao-paulo-tem-185-de-todos-os-roubos-e-furtos-de-celulares-do-brasil/" target="_blank" rel="noopener noreferrer">
-          <div class="article-meta">
-            <span>CNN BRASIL</span>
-            <time datetime="2025-07-24">24.07.2025</time>
-          </div>
-          <figure class="article-media">
-            <img src="assets/images/news-cnn.jpg" alt="Pessoa segura vários celulares, em foto publicada pela CNN Brasil." data-alt-pt="Pessoa segura vários celulares, em foto publicada pela CNN Brasil." data-alt-en="A person holding several phones, in a photo published by CNN Brasil." width="827" height="414" loading="lazy" decoding="async">
-            <figcaption data-i18n="newsPhotoCredit1">Foto: Divulgação/SSP</figcaption>
-          </figure>
-          <div class="big-stat" data-i18n="statValue">18,5<span>%</span></div>
-          <h3 data-i18n="statDescription">dos roubos e furtos de celulares do Brasil em 2024 ocorreram na cidade de São Paulo.</h3>
-          <span class="article-link"><span data-i18n="readSource">Ler matéria original</span> ↗</span>
-        </a>
+        <article class="info-card">
+          <span class="eyebrow" data-i18n="diff2Tag">ÉTICA URBANA</span>
+          <h3 data-i18n="pillar2Title">Trajeto, não bairro</h3>
+          <p data-i18n="pillar2Desc">Analisamos vias e horários sem rotular moradores.</p>
+        </article>
 
-        <a class="article" href="https://www.fecap.br/2026/02/09/roubos-e-furtos-de-celulares-caem-905-em-sp-em-2025-veja-cidades-bairros-e-locais-com-mais-ocorrencias/" target="_blank" rel="noopener noreferrer">
-          <div class="article-meta">
-            <span>FECAP</span>
-            <time datetime="2026-02-09">09.02.2026</time>
-          </div>
-          <figure class="article-media">
-            <img src="assets/images/news-fecap.jpg" alt="Cena ilustrativa de furto a uma pessoa que usa o celular na rua." data-alt-pt="Cena ilustrativa de furto a uma pessoa que usa o celular na rua." data-alt-en="Illustrative theft scene involving a person using a phone on the street." width="600" height="400" loading="lazy" decoding="async">
-            <figcaption data-i18n="newsPhotoCredit2">Imagem ilustrativa: Freepik / FECAP</figcaption>
-          </figure>
-          <h3 data-i18n="news2Title">Estudo mapeia locais com mais ocorrências.</h3>
-          <p data-i18n="news2Description">A FECAP analisou registros de roubos e furtos de celulares em 2025.</p>
-          <span class="article-link"><span data-i18n="readStudy">Explorar o estudo</span> ↗</span>
-        </a>
+        <article class="info-card">
+          <span class="eyebrow" data-i18n="diff3Tag">AUTONOMIA</span>
+          <h3 data-i18n="pillar3Title">Transparência real</h3>
+          <p data-i18n="pillar3Desc">Nenhuma rota é 100% segura; você decide com clareza.</p>
+        </article>
 
-        <a class="article" href="https://www.ssp.sp.gov.br/noticia/60440" target="_blank" rel="noopener noreferrer">
-          <div class="article-meta">
-            <span>SSP · SÃO PAULO</span>
-            <time datetime="2026-06-01">01.06.2026</time>
-          </div>
-          <figure class="article-media">
-            <img src="assets/images/news-ssp.jpg" alt="Policiais caminham por uma rua comercial." data-alt-pt="Policiais caminham por uma rua comercial." data-alt-en="Police officers walking along a commercial street." width="1024" height="683" loading="lazy" decoding="async">
-            <figcaption data-i18n="newsPhotoCredit3">Foto: SSP-SP</figcaption>
-          </figure>
-          <h3 data-i18n="news3Title">SP registra 27,4 mil roubos de celulares em quatro meses.</h3>
-          <p data-i18n="news3Description">Segundo a SSP, os registros ocorreram no estado entre janeiro e abril de 2026, mesmo com a queda nas ocorrências.</p>
-          <span class="article-link"><span data-i18n="readSource">Ler matéria original</span> ↗</span>
-        </a>
+        <article class="info-card">
+          <span class="eyebrow" data-i18n="diff4Tag">INCLUSÃO</span>
+          <h3 data-i18n="pillar4Title">Acessível e bilíngue</h3>
+          <p data-i18n="pillar4Desc">Português, Inglês e Modo Alto Contraste para daltonismo.</p>
+        </article>
       </div>
-
-      <p class="source-note" data-i18n="sourceNote">Fontes com data e link para a publicação original. As notícias contextualizam o problema; o mapa usa dados fictícios.</p>
     </section>
 
-    <section id="como" class="slide solution">
-      <p class="eyebrow" data-i18n="solutionEyebrow">02 / A NOSSA PROPOSTA</p>
-      <div class="heading-row">
-        <h2 data-i18n="solutionTitle">Veja o risco<br>da sua rota.</h2>
-        <p data-i18n="solutionDescription">A proposta é informar se o trajeto escolhido passa por uma área de risco.</p>
-      </div>
-
-      <div class="steps">
-        <article>
-          <div class="step-top">
-            <span>01</span>
-            <svg viewBox="0 0 48 48" aria-hidden="true">
-              <circle cx="24" cy="20" r="7"/>
-              <path d="M39 20c0 12-15 24-15 24S9 32 9 20a15 15 0 0 1 30 0Z"/>
-            </svg>
-          </div>
-          <h3 data-i18n="step1Title">Informe seu trajeto.</h3>
-          <p data-i18n="step1Description">Indique a origem e o destino em São Paulo.</p>
-        </article>
-
-        <article>
-          <div class="step-top">
-            <span>02</span>
-            <svg class="red-icon" viewBox="0 0 48 48" aria-hidden="true">
-              <path d="m24 5 20 36H4Z"/>
-              <path d="M24 17v11m0 5v2"/>
-            </svg>
-          </div>
-          <h3 data-i18n="step2Title">Veja as áreas de risco.</h3>
-          <p data-i18n="step2Description">As zonas em vermelho destacariam os trechos que exigem atenção.</p>
-        </article>
-
-        <article>
-          <div class="step-top">
+    <!-- SLIDE 05: PÚBLICO-ALVO E UTILIDADE PÚBLICA -->
+    <section id="publico" class="slide section-tint pitch-section">
+      <div class="audience">
+        <div class="audience-intro">
+          <p class="eyebrow" data-i18n="audienceEyebrow">05 / PARA QUEM E MODELO</p>
+          <h2 data-i18n="audienceTitle">Para quem chega à cidade.</h2>
+          <p data-i18n="audienceDescription">100% gratuito e de utilidade pública, focado em impacto social.</p>
+          <div class="audience-stamp">
             <span>03</span>
-            <svg viewBox="0 0 48 48" aria-hidden="true">
-              <path d="M24 5 40 11v12c0 9-9 16-16 20C17 39 8 32 8 23V11Z"/>
-              <path d="M24 16v10m0 5v2"/>
-            </svg>
+            <span data-i18n="audienceStampLabel">PERFIS DE USO<br>100% GRATUITO</span>
           </div>
-          <h3 data-i18n="step3Title">Confira o resultado.</h3>
-          <p data-i18n="step3Description">Receba uma indicação de segurança para a rota escolhida.</p>
-        </article>
-      </div>
+        </div>
 
-      <div class="solution-callout">
-        <span class="cross-large" aria-hidden="true">+</span>
-        <p data-i18n="solutionCallout">O diferencial: <strong>mostrar o risco ao longo do caminho.</strong></p>
-        <a class="text-link" href="#demo"><span data-i18n="backDemo">Ver exemplo no mapa</span> ↗</a>
-      </div>
-    </section>
+        <div class="audience-list">
+          <article>
+            <span class="audience-number">01</span>
+            <div>
+              <h3 data-i18n="who1Title">Turistas e visitantes</h3>
+              <p data-i18n="who1Description">Chegada por aeroportos (Guarulhos e Congonhas) e passeios.</p>
+              <span class="pill audience-badge-1" data-i18n="who1Tag">TURISMO E DESCOBERTA</span>
+            </div>
+            <span aria-hidden="true">↗</span>
+          </article>
 
-    <section id="publico" class="slide audience">
-      <div class="audience-intro">
-        <p class="eyebrow" data-i18n="audienceEyebrow">03 / PARA QUEM</p>
-        <h2 data-i18n="audienceTitle">Para quem não<br>conhece a cidade.</h2>
-        <p data-i18n="audienceDescription">Informação para visitantes e profissionais que passam por lugares novos.</p>
-        <div class="audience-stamp" aria-hidden="true">
-          <span>SP</span>
-          <span>23°33′ S<br>46°38′ W</span>
+          <article>
+            <span class="audience-number">02</span>
+            <div>
+              <h3 data-i18n="who2Title">Pessoas a trabalho</h3>
+              <p data-i18n="who2Description">Reuniões e eventos em centros como Expo SP e Anhembi.</p>
+              <span class="pill audience-badge-2" data-i18n="who2Tag">TRABALHO E DIA A DIA</span>
+            </div>
+            <span aria-hidden="true">↗</span>
+          </article>
+
+          <article>
+            <span class="audience-number">03</span>
+            <div>
+              <h3 data-i18n="who3Title">Motoristas e viajantes</h3>
+              <p data-i18n="who3Description">Deslocamentos diários por regiões desconhecidas.</p>
+              <span class="pill audience-badge-3" data-i18n="who3Tag">MOBILIDADE E DESLOCAMENTO</span>
+            </div>
+            <span aria-hidden="true">↗</span>
+          </article>
         </div>
       </div>
-
-      <div class="audience-list">
-        <article>
-          <span class="audience-number">01</span>
-          <div>
-            <h3 data-i18n="who1Title">Turistas e visitantes</h3>
-            <p data-i18n="who1Description">Quem vem de outra cidade e quer planejar os passeios.</p>
-            <span class="pill" data-i18n="who1Tag">TURISMO & DESCOBERTA</span>
-          </div>
-          <span aria-hidden="true">↗</span>
-        </article>
-
-        <article>
-          <span class="audience-number">02</span>
-          <div>
-            <h3 data-i18n="who2Title">Pessoas a trabalho</h3>
-            <p data-i18n="who2Description">Quem precisa chegar a reuniões, eventos ou empresas em regiões desconhecidas.</p>
-            <span class="pill" data-i18n="who2Tag">TRABALHO & ROTINA</span>
-          </div>
-          <span aria-hidden="true">↗</span>
-        </article>
-
-        <article>
-          <span class="audience-number">03</span>
-          <div>
-            <h3 data-i18n="who3Title">Motoristas e viajantes</h3>
-            <p data-i18n="who3Description">Motoristas de aplicativo e profissionais que viajam para São Paulo.</p>
-            <span class="pill" data-i18n="who3Tag">MOBILIDADE & VIAGENS</span>
-          </div>
-          <span aria-hidden="true">↗</span>
-        </article>
-      </div>
     </section>
 
-    <section id="visao" class="slide vision">
-      <img class="identity-logo" src="assets/images/logo-safejy.png" alt="Logo SAFEJY: escudo e marcador em tons de verde" width="1024" height="1024">
-      <p class="eyebrow" data-i18n="visionEyebrow">04 / PRÓXIMOS PASSOS</p>
+    <!-- SLIDE 06: VISÃO E PRÓXIMOS PASSOS -->
+    <section id="visao" class="slide vision pitch-section">
+      <img class="identity-logo" src="assets/images/logo-full.png" alt="Logo SAFEJY: escudo e marcador em tons de verde"
+        width="136" height="144">
+      <p class="eyebrow" data-i18n="visionEyebrow">06 / VISÃO E PRÓXIMOS PASSOS</p>
       <h2 data-i18n="visionTitle">Conheça os riscos.<br><em>Planeje sua viagem.</em></h2>
-      <p class="vision-description" data-i18n="visionDescription">A SAFEJY quer ajudar quem chega a São Paulo a conhecer os riscos da rota antes da viagem.</p>
+
       <div class="roadmap">
         <div>
           <span class="green-dot"></span>
           <span data-i18n="now">AGORA</span>
-          <h3 data-i18n="nowTitle">Validar a proposta</h3>
-          <p data-i18n="nowDescription">Apresentar o protótipo e ouvir turistas e motoristas.</p>
+          <h3 data-i18n="nowTitle">Validar o protótipo</h3>
+          <p data-i18n="nowDescription">Apresentar à banca e ouvir turistas e motoristas.</p>
         </div>
         <div>
           <span class="hollow-dot"></span>
-          <span data-i18n="next">PRÓXIMA ETAPA</span>
-          <h3 data-i18n="nextTitle">Desenvolver o app</h3>
-          <p data-i18n="nextDescription">Definir fontes de dados, critérios de risco e avaliação das rotas.</p>
+          <span data-i18n="next">PRÓXIMO PASSO</span>
+          <h3 data-i18n="nextTitle">Evoluir o app</h3>
+          <p data-i18n="nextDescription">Conectar dados abertos da SSP-SP por via e horário.</p>
         </div>
       </div>
-      <button id="view-map" class="button primary">
-        <span data-i18n="viewMap">Ver exemplo no mapa</span>
-        <span aria-hidden="true">↗</span>
-      </button>
-      <p class="vision-note" data-i18n="visionNote">Projeto acadêmico. Nenhuma rota garante ausência de risco.</p>
+
+      <a class="button primary" href="#demo">
+        <span data-i18n="backToSim">Testar simulador no topo</span>
+        <span aria-hidden="true">↑</span>
+      </a>
+      <p class="vision-note" data-i18n="visionNote">Projeto acadêmico · 2026. Nenhuma rota garante ausência de risco.
+      </p>
     </section>
   </main>
 
   <footer>
     <a class="brand" href="#inicio" aria-label="SAFEJY — início">
       <span class="brand-symbol" aria-hidden="true">
-        <img src="assets/images/logo-safejy.png" alt="" width="1024" height="1024">
+        <img src="assets/images/logo-icon.png" alt="SAFEJY" width="40" height="26">
       </span>
       <span class="brand-name">safejy</span>
     </a>
     <p data-i18n="footer">Informação antes de seguir.</p>
-    <span data-i18n="academicFooter">PROJETO ACADÊMICO · 2026</span>
+    <span><span data-i18n="academicFooter">PROJETO ACADÊMICO · 2026</span> · <a class="text-link"
+        href="manual-da-marca/index.html" data-i18n="brandManual">Manual da marca</a></span>
   </footer>
 </body>
+
 </html>
