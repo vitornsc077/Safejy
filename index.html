@@ -37,11 +37,11 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Gelasio:ital,wght@0,400;0,500;0,600;0,700;1,600&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Serif:wght@400;600;700;800&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.css?v=23">
+  <link rel="stylesheet" href="assets/css/styles.css?v=24">
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
-  <script src="assets/js/script.js?v=21" defer></script>
+  <script src="assets/js/script.js?v=24" defer></script>
 </head>
 
 <body>
@@ -66,9 +66,27 @@
       </nav>
 
       <div class="header-end">
-        <div class="lang-switch" role="group" aria-label="Selecionar idioma / Choose language">
-          <button type="button" data-lang="pt" aria-pressed="true" aria-label="Português">PT</button>
-          <button type="button" data-lang="en" aria-pressed="false" aria-label="English">EN</button>
+        <div id="lang-dropdown" class="languages">
+          <button type="button" id="lang-menu-toggle" class="lang-menu-toggle" aria-haspopup="true"
+            aria-expanded="false" aria-controls="lang-menu" aria-label="Selecionar idioma" title="Selecionar idioma">
+            <img class="lang-icon" src="assets/images/translate-icon.svg" alt="" width="22" height="22" aria-hidden="true">
+            <svg class="lang-caret" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2.5 4.5L6 8L9.5 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </button>
+          <div id="lang-menu" class="lang-menu" role="menu" aria-label="Idioma / Language">
+            <button type="button" class="lang-option" role="menuitemradio" data-lang="pt" aria-checked="true"
+              aria-pressed="true" lang="pt-BR" aria-label="Mudar para português">
+              <span>Português</span>
+              <span class="lang-option-code">PT</span>
+            </button>
+            <button type="button" class="lang-option" role="menuitemradio" data-lang="en" aria-checked="false"
+              aria-pressed="false" lang="en" aria-label="Switch to English">
+              <span>Inglês</span>
+              <span class="lang-option-code">EN</span>
+            </button>
+          </div>
         </div>
         <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Ativar tema escuro"
           title="Ativar tema escuro" aria-pressed="false">

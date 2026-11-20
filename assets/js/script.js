@@ -197,7 +197,17 @@
         el.innerHTML = language === 'en' ? value : originals.get(el);
       });
     }
-    document.querySelectorAll('.lang-switch button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === language)));
+    document.querySelectorAll('[data-lang]').forEach(b => {
+      const active = b.dataset.lang === language;
+      b.setAttribute('aria-pressed', String(active));
+      b.setAttribute('aria-checked', String(active));
+    });
+    const langToggleBtn = document.getElementById('lang-menu-toggle');
+    if (langToggleBtn) {
+      const langLabel = language === 'en' ? 'Select language' : 'Selecionar idioma';
+      langToggleBtn.setAttribute('aria-label', langLabel);
+      langToggleBtn.title = langLabel;
+    }
     const descMeta = document.querySelector('meta[name="description"]');
     if (descMeta) {
       descMeta.setAttribute('content', language === 'en'
@@ -210,8 +220,39 @@
     try { localStorage.setItem('safejy-lang', language); } catch (e) { }
   }
 
-  document.querySelectorAll('.lang-switch button').forEach(btn => {
-    btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
+  const langDropdownEl = document.getElementById('lang-dropdown');
+  const langMenuToggleEl = document.getElementById('lang-menu-toggle');
+
+  function toggleLanguageMenu(forceState) {
+    if (!langDropdownEl || !langMenuToggleEl) return;
+    const willOpen = typeof forceState === 'boolean' ? forceState : !langDropdownEl.classList.contains('is-open');
+    langDropdownEl.classList.toggle('is-open', willOpen);
+    langMenuToggleEl.setAttribute('aria-expanded', String(willOpen));
+  }
+
+  if (langMenuToggleEl && langDropdownEl) {
+    langMenuToggleEl.addEventListener('click', (event) => {
+      event.stopPropagation();
+      toggleLanguageMenu();
+    });
+    document.addEventListener('click', (event) => {
+      if (langDropdownEl.classList.contains('is-open') && !langDropdownEl.contains(event.target)) {
+        toggleLanguageMenu(false);
+      }
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && langDropdownEl.classList.contains('is-open')) {
+        toggleLanguageMenu(false);
+        langMenuToggleEl.focus();
+      }
+    });
+  }
+
+  document.querySelectorAll('[data-lang]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      setLanguage(btn.dataset.lang);
+      toggleLanguageMenu(false);
+    });
   });
 
   if (menu && nav) {

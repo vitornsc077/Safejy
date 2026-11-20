@@ -474,7 +474,7 @@ a.primary:focus-visible {
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 14px;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -5629,7 +5629,17 @@ document.addEventListener("DOMContentLoaded", () => {
         el.innerHTML = language === 'en' ? value : originals.get(el);
       });
     }
-    document.querySelectorAll('.lang-switch button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === language)));
+    document.querySelectorAll('[data-lang]').forEach(b => {
+      const active = b.dataset.lang === language;
+      b.setAttribute('aria-pressed', String(active));
+      b.setAttribute('aria-checked', String(active));
+    });
+    const langToggleBtn = document.getElementById('lang-menu-toggle');
+    if (langToggleBtn) {
+      const langLabel = language === 'en' ? 'Select language' : 'Selecionar idioma';
+      langToggleBtn.setAttribute('aria-label', langLabel);
+      langToggleBtn.title = langLabel;
+    }
     const descMeta = document.querySelector('meta[name="description"]');
     if (descMeta) {
       descMeta.setAttribute('content', language === 'en'
@@ -5642,8 +5652,39 @@ document.addEventListener("DOMContentLoaded", () => {
     try { localStorage.setItem('safejy-lang', language); } catch (e) { }
   }
 
-  document.querySelectorAll('.lang-switch button').forEach(btn => {
-    btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
+  const langDropdownEl = document.getElementById('lang-dropdown');
+  const langMenuToggleEl = document.getElementById('lang-menu-toggle');
+
+  function toggleLanguageMenu(forceState) {
+    if (!langDropdownEl || !langMenuToggleEl) return;
+    const willOpen = typeof forceState === 'boolean' ? forceState : !langDropdownEl.classList.contains('is-open');
+    langDropdownEl.classList.toggle('is-open', willOpen);
+    langMenuToggleEl.setAttribute('aria-expanded', String(willOpen));
+  }
+
+  if (langMenuToggleEl && langDropdownEl) {
+    langMenuToggleEl.addEventListener('click', (event) => {
+      event.stopPropagation();
+      toggleLanguageMenu();
+    });
+    document.addEventListener('click', (event) => {
+      if (langDropdownEl.classList.contains('is-open') && !langDropdownEl.contains(event.target)) {
+        toggleLanguageMenu(false);
+      }
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && langDropdownEl.classList.contains('is-open')) {
+        toggleLanguageMenu(false);
+        langMenuToggleEl.focus();
+      }
+    });
+  }
+
+  document.querySelectorAll('[data-lang]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      setLanguage(btn.dataset.lang);
+      toggleLanguageMenu(false);
+    });
   });
 
   if (menu && nav) {
@@ -5959,9 +6000,27 @@ document.addEventListener("DOMContentLoaded", () => {
       </nav>
 
       <div class="header-end">
-        <div class="lang-switch" role="group" aria-label="Selecionar idioma / Choose language">
-          <button type="button" data-lang="pt" aria-pressed="true" aria-label="Português">PT</button>
-          <button type="button" data-lang="en" aria-pressed="false" aria-label="English">EN</button>
+        <div id="lang-dropdown" class="languages">
+          <button type="button" id="lang-menu-toggle" class="lang-menu-toggle" aria-haspopup="true"
+            aria-expanded="false" aria-controls="lang-menu" aria-label="Selecionar idioma" title="Selecionar idioma">
+            <img class="lang-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSI+CiAgPCEtLSBSaWdodCBncmV5IGNhcmQgLS0+CiAgPHBhdGggZD0iTTI3IDE2SDUzLjVBNC41IDQuNSAwIDAgMSA1OCAyMC41VjUxLjVBNC41IDQuNSAwIDAgMSA1My41IDU2SDM0TDI3IDQ2WiIgZmlsbD0iI0UxRTJFNCIvPgogIDwhLS0gU3VidGxlIGZvbGQgc2hhZG93IG9uIGdyZXkgY2FyZCAtLT4KICA8cGF0aCBkPSJNMjcgMTZIMzEuOEw0MSA0NkwzNCA1NkwyNyA0NloiIGZpbGw9IiNEMkQ0RDYiLz4KICA8IS0tIEhhbnppICLmlociIGNoYXJhY3RlciAtLT4KICA8ZyBzdHJva2U9IiM2Mjc5ODYiIHN0cm9rZS13aWR0aD0iMi45IiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+CiAgICA8cGF0aCBkPSJNNDYuNSAyNC41VjMwIi8+CiAgICA8cGF0aCBkPSJNMzUgMzBINTUiLz4KICAgIDxwYXRoIGQ9Ik01MS41IDMwQzUwIDM3LjUgNDUuNiA0My4yIDQwLjYgNDYuOCIvPgogICAgPHBhdGggZD0iTTQxLjUgMzMuOEM0NC42IDM5LjIgNDkuMiA0My42IDU1IDQ2LjgiLz4KICA8L2c+CiAgPCEtLSBCb3R0b20gZm9sZCB0cmlhbmdsZSAtLT4KICA8cGF0aCBkPSJNMjkgNDZMMzQgNTZMNDAgNDZaIiBmaWxsPSIjMzk0OUFCIi8+CiAgPCEtLSBMZWZ0IGJsdWUgY2FyZCAtLT4KICA8cGF0aCBkPSJNMTAuNSA4SDI5TDQwIDQ2SDEwLjVBNC41IDQuNSAwIDAgMSA2IDQxLjVWMTIuNUE0LjUgNC41IDAgMCAxIDEwLjUgOFoiIGZpbGw9IiM0NTg5RjUiLz4KICA8IS0tIEdlb21ldHJpYyB3aGl0ZSAiRyIgLS0+CiAgPHBhdGggZD0iTTI5LjMgMjUuNUgyMC4zVjI4LjVIMjYuMkMyNS42IDMxLjEgMjMuMyAzMyAyMC4zIDMzQzE2LjkgMzMgMTQuMiAzMC4zIDE0LjIgMjdDMTQuMiAyMy43IDE2LjkgMjEgMjAuMyAyMUMyMiAyMSAyMy41IDIxLjcgMjQuNiAyMi44TDI2LjggMjAuNkMyNS4xIDE5IDIyLjggMTggMjAuMyAxOEMxNS4zIDE4IDExLjIgMjIgMTEuMiAyN0MxMS4yIDMyIDE1LjMgMzYgMjAuMyAzNkMyNS40IDM2IDI5LjUgMzIuMyAyOS41IDI3LjJDMjkuNSAyNi42IDI5LjQgMjYgMjkuMyAyNS41WiIgZmlsbD0iI0YxRjNGNCIvPgo8L3N2Zz4K" alt="" width="22" height="22" aria-hidden="true">
+            <svg class="lang-caret" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2.5 4.5L6 8L9.5 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </button>
+          <div id="lang-menu" class="lang-menu" role="menu" aria-label="Idioma / Language">
+            <button type="button" class="lang-option" role="menuitemradio" data-lang="pt" aria-checked="true"
+              aria-pressed="true" lang="pt-BR" aria-label="Mudar para português">
+              <span>Português</span>
+              <span class="lang-option-code">PT</span>
+            </button>
+            <button type="button" class="lang-option" role="menuitemradio" data-lang="en" aria-checked="false"
+              aria-pressed="false" lang="en" aria-label="Switch to English">
+              <span>Inglês</span>
+              <span class="lang-option-code">EN</span>
+            </button>
+          </div>
         </div>
         <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Ativar tema escuro"
           title="Ativar tema escuro" aria-pressed="false">
