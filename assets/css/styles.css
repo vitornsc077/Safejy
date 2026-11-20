@@ -1053,12 +1053,12 @@ main:focus {
 
 .dash-body {
   display: grid;
-  grid-template-columns: 122px minmax(0, 1fr);
+  grid-template-columns: 134px minmax(0, 1fr);
   min-height: 401px;
 }
 
 .dash-side {
-  padding: 19px 11px;
+  padding: 19px 10px;
   background: #fbfcfc;
   border-right: 1px solid #f0f1f1;
 }
@@ -1068,18 +1068,19 @@ main:focus {
   font-family: var(--mono);
   font-size: 0.75rem;
   font-weight: 600;
-  padding: 3px 9px 18px;
+  padding: 3px 8px 18px;
   color: #192024;
 }
 
 .dash-side .side-item {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 8px;
   font-size: 0.75rem;
+  white-space: nowrap;
   color: #4f575b;
   margin: 5px 0;
-  padding: 10px 9px;
+  padding: 9px 8px;
   border-radius: 6px;
 }
 
@@ -1119,13 +1120,13 @@ main:focus {
   border: 1px solid #f3ddd5;
   background: #ffffff;
   color: #192024;
-  padding: 10px 12px;
+  padding: 8px 11px;
   border-radius: 10px;
   box-shadow: 0 8px 24px rgba(33, 30, 64, 0.14);
   z-index: 3;
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 8px;
 }
 
 .float-tag i {
@@ -1153,8 +1154,8 @@ main:focus {
   margin-top: 2px;
 }
 
-.float-tag.one { top: 76px; right: 23px; }
-.float-tag.two { bottom: 30px; left: 18px; border-color: #dad7ff; }
+.float-tag.one { top: 14px; right: 14px; }
+.float-tag.two { bottom: 16px; left: 14px; border-color: #dad7ff; }
 .float-tag.two i { background: #5d57e8; }
 
 /* Tema escuro do mockup Hero (.dash, .float-tag, .hero-note) — contraste AAA */
@@ -1261,14 +1262,15 @@ main:focus {
 
 .hero-note {
   position: absolute;
-  left: -23px;
-  bottom: 0;
+  left: 0;
+  bottom: -10px;
+  max-width: calc(100% - 204px);
   font-family: var(--mono);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 500;
   background: #ffffff;
   color: #4b5356;
-  padding: 10px 14px;
+  padding: 9px 12px;
   border: 1px solid #e0e5e3;
   border-radius: 6px;
   box-shadow: 0 8px 25px rgba(36, 40, 71, 0.08);
