@@ -5353,16 +5353,25 @@ body::before {
   display: block;
 }
 
-/* Ajuste fino de espaçamento tipográfico para Gelasio & Noto Serif (padrão safejy.vercel.app) */
+/* Ajuste fino de peso e espaçamento tipográfico para Gelasio & Noto Serif (idêntico ao safejy.vercel.app) */
+body {
+  font-family: var(--sans);
+  font-weight: 500;
+}
+
 .hero h1 {
-  letter-spacing: -0.025em;
-  line-height: 1.06;
+  font-family: var(--display);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
 }
 
 .section-title,
 .pitch .section-title {
+  font-family: var(--display);
+  font-weight: 700;
   letter-spacing: -0.02em;
-  line-height: 1.12;
+  line-height: 1.16;
 }
 
 .why-item h3,
@@ -5370,5 +5379,7 @@ body::before {
 .story h3,
 .divider-cell strong,
 .mini-card .big-number {
+  font-family: var(--display);
+  font-weight: 700;
   letter-spacing: -0.015em;
 }
