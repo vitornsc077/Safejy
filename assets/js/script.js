@@ -1,25 +1,26 @@
 'use strict';
 
-(() => {
-  const root = document.documentElement;
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  let lenisInstance = null;
+(function () {
+  var root = document.documentElement;
+  var reducedMotion = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
+  var prefersDarkQuery = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : { matches: false };
+  var lenisInstance = null;
 
-  // ===== 1. Tema Claro / Escuro (Fundo Safejy) =====
-  let language = 'pt';
+  // ===== 1. Tema Claro / Escuro (respeitando preferência do sistema na 1ª visita) =====
+  var language = 'pt';
 
   function updateThemeLabels() {
-    const dark = root.dataset.theme === 'dark';
-    const label = language === 'pt'
+    var dark = root.dataset.theme === 'dark';
+    var label = language === 'pt'
       ? (dark ? 'Ativar tema claro' : 'Ativar tema escuro')
       : (dark ? 'Switch to light theme' : 'Switch to dark theme');
-    const button = document.getElementById('theme-toggle');
+    var button = document.getElementById('theme-toggle');
     if (button) {
       button.setAttribute('aria-label', label);
       button.title = label;
       button.setAttribute('aria-pressed', String(dark));
     }
-    const themeLabel = document.getElementById('theme-label');
+    var themeLabel = document.getElementById('theme-label');
     if (themeLabel) {
       themeLabel.textContent = language === 'pt'
         ? (dark ? 'Modo claro' : 'Modo escuro')
@@ -29,35 +30,54 @@
 
   function setTheme(theme) {
     root.dataset.theme = theme;
-    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    var metaTheme = document.querySelector('meta[name="theme-color"]');
     if (metaTheme) metaTheme.content = theme === 'dark' ? '#0D1812' : '#f5f7f6';
-    const metaColorScheme = document.querySelector('meta[name="color-scheme"]');
+    var metaColorScheme = document.querySelector('meta[name="color-scheme"]');
     if (metaColorScheme) metaColorScheme.content = theme === 'dark' ? 'dark' : 'only light';
     updateThemeLabels();
   }
 
-  const themeToggleBtn = document.getElementById('theme-toggle');
+  var themeToggleBtn = document.getElementById('theme-toggle');
   if (themeToggleBtn) {
-    themeToggleBtn.addEventListener('click', () => {
-      const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    themeToggleBtn.addEventListener('click', function () {
+      var next = root.dataset.theme === 'dark' ? 'light' : 'dark';
       setTheme(next);
       try { localStorage.setItem('safejy-theme', next); } catch (e) { }
     });
   }
 
-  // ===== 2. Conteúdo e Traduções Oficiais (eliassouza71727-spec.github.io/Safejy) =====
-  const menu = document.querySelector('.mobile-menu');
-  const nav = document.getElementById('navigation');
-  const filterBtns = Array.from(document.querySelectorAll('.filter'));
-  const stories = Array.from(document.querySelectorAll('.story'));
-  const layers = Array.from(document.querySelectorAll('.switch-option'));
-  const marks = Array.from(document.querySelectorAll('.mark'));
-  const tip = document.getElementById('map-tooltip');
+  if (prefersDarkQuery && typeof prefersDarkQuery.addEventListener === 'function') {
+    prefersDarkQuery.addEventListener('change', function (event) {
+      var saved = null;
+      try { saved = localStorage.getItem('safejy-theme'); } catch (e) { }
+      if (!saved) setTheme(event.matches ? 'dark' : 'light');
+    });
+  }
 
-  let selectedMark = null;
-  let activeLayer = 'all';
+  // ===== 2. Conteúdo, Traduções PT/EN e Acessibilidade =====
+  var menu = document.querySelector('.mobile-menu');
+  var nav = document.getElementById('navigation');
+  var headerEl = document.querySelector('.header');
+  var filterBtns = Array.prototype.slice.call(document.querySelectorAll('.filter'));
+  var stories = Array.prototype.slice.call(document.querySelectorAll('.story'));
+  var layers = Array.prototype.slice.call(document.querySelectorAll('.switch-option'));
+  var marks = Array.prototype.slice.call(document.querySelectorAll('.mark'));
+  var tip = document.getElementById('map-tooltip');
 
-  const english = [
+  var selectedMark = null;
+  var activeLayer = 'all';
+
+  function updateMobileMenuLabel() {
+    if (!menu || !nav) return;
+    var isOpen = nav.classList.contains('open');
+    var label = language === 'en'
+      ? (isOpen ? 'Close menu' : 'Open menu')
+      : (isOpen ? 'Fechar menu' : 'Abrir menu');
+    menu.setAttribute('aria-label', label);
+    menu.setAttribute('aria-expanded', String(isOpen));
+  }
+
+  var english = [
     ['.skip', 'Skip to content'],
     ['#navigation a:nth-child(1)', 'The challenge'],
     ['#navigation a:nth-child(2)', 'The platform'],
@@ -72,7 +92,7 @@
     ['.scroll-hint span:last-child', 'Scroll to explore'],
     ['.hero-bottom .micro', 'For people driving, visiting or discovering a place for the first time.'],
     ['.dash-header .micro:nth-of-type(2)', 'safejy / area overview'],
-    ['.dash-header .micro:nth-of-type(3)', '● PREVIEW'],
+    ['.dash-header .dash-status', '● PREVIEW'],
     ['.dash-side .side-item:nth-of-type(1)', '<span class="side-square"></span>Overview'],
     ['.dash-side .side-item:nth-of-type(2)', '<span class="side-square"></span>Sources'],
     ['.dash-side .side-item:nth-of-type(3)', '<span class="side-square"></span>News'],
@@ -91,7 +111,7 @@
     ['.divider-cell:nth-child(3) strong', '03 / Decide'],
     ['.divider-cell:nth-child(3)>div>span', 'With context, not fear.'],
     ['.why .eyebrow', '01 / The challenge'],
-    ['.why h2', 'Risk does not<br>announce<br>itself<span style="color:var(--violet)">.</span>'],
+    ['.why h2', 'Risk does not<br>announce<br>itself<span class="title-accent">.</span>'],
     ['.why .section-intro', 'What do you do when you arrive in an unfamiliar neighborhood? Finding out what happened there recently is not always easy — information is often scattered across news outlets, public databases and official websites.'],
     ['.small-flag>span:last-child', 'Information is not fear. It is the freedom to choose.'],
     ['.why-item:nth-child(1) h3', 'For rideshare drivers'],
@@ -106,14 +126,14 @@
     ['.panel-left>.eyebrow', 'SAFEJY / LAB'],
     ['.panel-left h3', 'Explore the<br>map preview.'],
     ['.panel-left>p', 'Choose a layer to see the route and support points. This demo uses <strong>fictional markers</strong>, not real incident data.'],
-    ['.switch-option[data-layer="all"] .switch-label', '<i></i>All layers'],
-    ['.switch-option[data-layer="attention"] .switch-label', '<i></i>Alerts'],
-    ['.switch-option[data-layer="support"] .switch-label', '<i></i>Support points'],
+    ['.switch-option[data-layer="all"] .switch-label', '<i aria-hidden="true"></i>All layers'],
+    ['.switch-option[data-layer="attention"] .switch-label', '<i aria-hidden="true"></i>Alerts'],
+    ['.switch-option[data-layer="support"] .switch-label', '<i aria-hidden="true"></i>Support points'],
     ['.panel-bottom', 'Real routes require current, georeferenced data. The route and support points shown here are illustrative.'],
     ['.map-caption', '◉ INTERACTIVE MAP <span>Illustrative route · no location data</span>'],
     ['.map-disclaimer span:last-child', '<b>Important:</b> This demo illustrates an interface. It does not identify dangerous areas or provide real routes or emergency guidance. Verified news appears below.'],
     ['.news-head .eyebrow', '03 / Real information'],
-    ['.news-head h2', 'Real news.<br>Sources you can check<span style="color:var(--violet)">.</span>'],
+    ['.news-head h2', 'Real news.<br>Sources you can check<span class="title-accent">.</span>'],
     ['.news-head>p', 'Selected news reports and public information about safety and mobility in São Paulo state. Each story includes its source, publication date and a link to the original article.'],
     ['.filter[data-filter="all"]', 'All news'],
     ['.filter[data-filter="mobilidade"]', 'Mobility'],
@@ -155,7 +175,29 @@
     ['.foot-bottom span:nth-child(2)', 'Not a replacement for emergency services or public safety authorities.']
   ];
 
-  const ptInfo = {
+  // Tradução completa de aria-label e title para leitores de tela
+  var englishAttrs = [
+    ['a.logo', 'aria-label', 'Safejy: home'],
+    ['#navigation', 'aria-label', 'Main navigation'],
+    ['#lang-menu', 'aria-label', 'Select language'],
+    ['.hero-bottom .traffic', 'aria-label', 'Traffic light inspiration'],
+    ['.hero-art', 'aria-label', 'Illustrative preview of the Safejy interface'],
+    ['.divider-info', 'aria-label', 'Project pillars'],
+    ['.map-stage > svg', 'aria-label', 'Illustrative stylized map with clickable points'],
+    ['.mark[data-spot="info"]', 'aria-label', 'Demo: illustrative support point'],
+    ['.mark[data-spot="attention"]', 'aria-label', 'Demo: illustrative alert'],
+    ['.mark[data-spot="source"]', 'aria-label', 'Demo: illustrative useful reference'],
+    ['.map-control', 'aria-label', 'Illustrative zoom'],
+    ['#zoom-in', 'aria-label', 'Zoom in map'],
+    ['#zoom-out', 'aria-label', 'Zoom out map'],
+    ['.news-filters', 'aria-label', 'Filter news'],
+    ['.story:nth-child(1) .story-bottom > a', 'aria-label', 'Read CNN Brasil report in a new tab'],
+    ['.story:nth-child(2) .story-bottom > a', 'aria-label', 'Read SSP-SP release in a new tab'],
+    ['.story:nth-child(3) .story-bottom > a', 'aria-label', 'Read Agência Brasil article in a new tab'],
+    ['.story:nth-child(4) .story-bottom > a', 'aria-label', 'Read Metrópoles report in a new tab']
+  ];
+
+  var ptInfo = {
     welcome: { label: 'VISUALIZAÇÃO ILUSTRATIVA', title: 'Explore o percurso', desc: 'Escolha um marcador para conhecer os tipos de informação previstos para o Safejy.' },
     info: { label: 'PONTO DE APOIO · EXEMPLO', title: 'Uma referência útil', desc: 'Na plataforma real, estes pontos poderiam reunir referências públicas verificáveis, com endereço, data e origem. Esta localização é fictícia.' },
     attention: { label: 'ALERTA · EXEMPLO', title: 'Informações que precisam de confirmação', desc: 'Um alerta real precisaria indicar o que aconteceu, quando, onde e a fonte. Este exemplo não representa uma ocorrência.' },
@@ -165,7 +207,7 @@
     attentionLayer: { label: 'FILTRO ATIVO', title: 'Alertas ilustrativos', desc: 'Os alertas mostrados são fictícios. Selecione o marcador vermelho para entender quais dados seriam exibidos.' }
   };
 
-  const enInfo = {
+  var enInfo = {
     welcome: { label: 'ILLUSTRATIVE PREVIEW', title: 'Explore the route', desc: 'Select a marker to see the kinds of information Safejy might provide.' },
     info: { label: 'SUPPORT POINT · EXAMPLE', title: 'A useful reference', desc: 'A real platform could include verified public references, with locations, dates and sources. This location is fictional.' },
     attention: { label: 'ALERT · EXAMPLE', title: 'Information requiring verification', desc: 'A real alert should say what happened, where, when and from which source. This is not a real incident.' },
@@ -175,296 +217,401 @@
     attentionLayer: { label: 'ACTIVE FILTER', title: 'Illustrative alerts', desc: 'These alerts are fictional. Select the red marker to see what information would be provided.' }
   };
 
-  const originals = new WeakMap();
-  for (const [selector] of english) {
-    document.querySelectorAll(selector).forEach(el => {
-      if (!originals.has(el)) originals.set(el, el.innerHTML);
-    });
+  var originals = new WeakMap();
+  for (var i = 0; i < english.length; i++) {
+    var nodes = document.querySelectorAll(english[i][0]);
+    for (var j = 0; j < nodes.length; j++) {
+      if (!originals.has(nodes[j])) originals.set(nodes[j], nodes[j].innerHTML);
+    }
   }
 
-  function drawTooltip(item) {
-    if (!tip) return;
-    const d = (language === 'en' ? enInfo : ptInfo)[item];
-    if (!d) return;
-    tip.innerHTML = `<span class="micro" style="color:var(--violet)">${d.label}</span><strong>${d.title}</strong><span>${d.desc}</span>`;
-  }
-
-  function setLanguage(lang) {
-    language = lang === 'en' ? 'en' : 'pt';
-    root.lang = language === 'en' ? 'en' : 'pt-BR';
-    for (const [selector, value] of english) {
-      document.querySelectorAll(selector).forEach(el => {
-        el.innerHTML = language === 'en' ? value : originals.get(el);
+  var originalAttrs = [];
+  for (var a = 0; a < englishAttrs.length; a++) {
+    var attrSelector = englishAttrs[a][0];
+    var attrName = englishAttrs[a][1];
+    var attrEn = englishAttrs[a][2];
+    var attrNodes = document.querySelectorAll(attrSelector);
+    for (var b = 0; b < attrNodes.length; b++) {
+      originalAttrs.push({
+        el: attrNodes[b],
+        attr: attrName,
+        pt: attrNodes[b].getAttribute(attrName) || '',
+        en: attrEn
       });
     }
-    document.querySelectorAll('[data-lang]').forEach(b => {
-      const active = b.dataset.lang === language;
-      b.setAttribute('aria-pressed', String(active));
-      b.setAttribute('aria-checked', String(active));
-    });
-    const langToggleBtn = document.getElementById('lang-menu-toggle');
+  }
+
+  function drawTooltip(item, silent) {
+    if (!tip) return;
+    var d = (language === 'en' ? enInfo : ptInfo)[item];
+    if (!d) return;
+    if (silent) {
+      tip.setAttribute('aria-live', 'off');
+    }
+    tip.innerHTML = '<span class="micro map-tooltip-label">' + d.label + '</span><strong>' + d.title + '</strong><span>' + d.desc + '</span>';
+    if (silent) {
+      window.setTimeout(function () {
+        if (tip) tip.setAttribute('aria-live', 'polite');
+      }, 60);
+    }
+  }
+
+  function setLanguage(lang, isInitial) {
+    language = lang === 'en' ? 'en' : 'pt';
+    root.lang = language === 'en' ? 'en' : 'pt-BR';
+
+    if (!isInitial || language === 'en') {
+      for (var k = 0; k < english.length; k++) {
+        var selector = english[k][0];
+        var value = english[k][1];
+        var matched = document.querySelectorAll(selector);
+        for (var m = 0; m < matched.length; m++) {
+          matched[m].innerHTML = language === 'en' ? value : originals.get(matched[m]);
+        }
+      }
+      for (var t = 0; t < originalAttrs.length; t++) {
+        var entry = originalAttrs[t];
+        entry.el.setAttribute(entry.attr, language === 'en' ? entry.en : entry.pt);
+      }
+    }
+
+    var langButtons = document.querySelectorAll('[data-lang]');
+    for (var lb = 0; lb < langButtons.length; lb++) {
+      var btn = langButtons[lb];
+      var active = btn.dataset.lang === language;
+      btn.setAttribute('aria-checked', String(active));
+    }
+
+    var langToggleBtn = document.getElementById('lang-menu-toggle');
     if (langToggleBtn) {
-      const langLabel = language === 'en' ? 'Select language' : 'Selecionar idioma';
+      var langLabel = language === 'en' ? 'Select language' : 'Selecionar idioma';
       langToggleBtn.setAttribute('aria-label', langLabel);
       langToggleBtn.title = langLabel;
     }
-    const descMeta = document.querySelector('meta[name="description"]');
+
+    var descMeta = document.querySelector('meta[name="description"]');
     if (descMeta) {
       descMeta.setAttribute('content', language === 'en'
         ? 'Safejy is a concept for making urban information easier to understand. Verified news, public sources and an interactive map preview.'
         : 'Safejy é um conceito de plataforma de informação para quem circula por regiões desconhecidas. Dados, notícias verificadas e contexto para decisões mais conscientes.');
     }
+
     document.title = language === 'en' ? 'Safejy — Every second counts.' : 'Safejy — Cada segundo conta.';
     updateThemeLabels();
-    drawTooltip(selectedMark ?? (activeLayer === 'attention' ? 'attentionLayer' : activeLayer === 'support' ? 'support' : 'welcome'));
+    updateMobileMenuLabel();
+
+    var tooltipKey = selectedMark !== null
+      ? selectedMark
+      : (activeLayer === 'attention' ? 'attentionLayer' : activeLayer === 'support' ? 'support' : 'welcome');
+
+    // Evita anunciar o mapa em leitores de tela logo ao abrir a página
+    if (!isInitial || language === 'en') {
+      drawTooltip(tooltipKey, Boolean(isInitial));
+    }
+
     try { localStorage.setItem('safejy-lang', language); } catch (e) { }
   }
 
-  const langDropdownEl = document.getElementById('lang-dropdown');
-  const langMenuToggleEl = document.getElementById('lang-menu-toggle');
+  // Menu dropdown de idiomas com navegação por teclado (Setas, Home, End, Esc, Tab)
+  var langDropdownEl = document.getElementById('lang-dropdown');
+  var langMenuToggleEl = document.getElementById('lang-menu-toggle');
+  var langOptions = Array.prototype.slice.call(document.querySelectorAll('#lang-menu .lang-option'));
 
-  function toggleLanguageMenu(forceState) {
+  function focusLangOption(index) {
+    if (!langOptions.length) return;
+    var safeIndex = (index + langOptions.length) % langOptions.length;
+    langOptions[safeIndex].focus();
+  }
+
+  function toggleLanguageMenu(forceState, focusMode) {
     if (!langDropdownEl || !langMenuToggleEl) return;
-    const willOpen = typeof forceState === 'boolean' ? forceState : !langDropdownEl.classList.contains('is-open');
+    var willOpen = typeof forceState === 'boolean' ? forceState : !langDropdownEl.classList.contains('is-open');
     langDropdownEl.classList.toggle('is-open', willOpen);
     langMenuToggleEl.setAttribute('aria-expanded', String(willOpen));
+    if (willOpen && focusMode) {
+      if (focusMode === 'last') {
+        focusLangOption(langOptions.length - 1);
+      } else {
+        var activeIdx = 0;
+        for (var idx = 0; idx < langOptions.length; idx++) {
+          if (langOptions[idx].getAttribute('aria-checked') === 'true') {
+            activeIdx = idx;
+            break;
+          }
+        }
+        focusLangOption(activeIdx);
+      }
+    }
   }
 
   if (langMenuToggleEl && langDropdownEl) {
-    langMenuToggleEl.addEventListener('click', (event) => {
+    langMenuToggleEl.addEventListener('click', function (event) {
       event.stopPropagation();
       toggleLanguageMenu();
     });
-    document.addEventListener('click', (event) => {
+
+    langMenuToggleEl.addEventListener('keydown', function (event) {
+      if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        toggleLanguageMenu(true, 'first');
+      } else if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        toggleLanguageMenu(true, 'last');
+      }
+    });
+
+    langOptions.forEach(function (opt, idx) {
+      opt.addEventListener('click', function () {
+        setLanguage(opt.dataset.lang, false);
+        toggleLanguageMenu(false);
+        langMenuToggleEl.focus();
+      });
+
+      opt.addEventListener('keydown', function (event) {
+        if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          focusLangOption(idx + 1);
+        } else if (event.key === 'ArrowUp') {
+          event.preventDefault();
+          focusLangOption(idx - 1);
+        } else if (event.key === 'Home') {
+          event.preventDefault();
+          focusLangOption(0);
+        } else if (event.key === 'End') {
+          event.preventDefault();
+          focusLangOption(langOptions.length - 1);
+        } else if (event.key === 'Escape') {
+          event.preventDefault();
+          toggleLanguageMenu(false);
+          langMenuToggleEl.focus();
+        } else if (event.key === 'Tab') {
+          toggleLanguageMenu(false);
+        }
+      });
+    });
+
+    document.addEventListener('click', function (event) {
       if (langDropdownEl.classList.contains('is-open') && !langDropdownEl.contains(event.target)) {
         toggleLanguageMenu(false);
       }
     });
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && langDropdownEl.classList.contains('is-open')) {
-        toggleLanguageMenu(false);
-        langMenuToggleEl.focus();
-      }
-    });
   }
 
-  document.querySelectorAll('[data-lang]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      setLanguage(btn.dataset.lang);
-      toggleLanguageMenu(false);
-    });
-  });
+  // Menu mobile com fechamento por Esc, clique fora e resize
+  function closeMobileMenu(returnFocus) {
+    if (!menu || !nav || !nav.classList.contains('open')) return;
+    nav.classList.remove('open');
+    updateMobileMenuLabel();
+    if (returnFocus) menu.focus();
+  }
 
   if (menu && nav) {
-    menu.addEventListener('click', () => {
-      const open = nav.classList.toggle('open');
-      menu.setAttribute('aria-expanded', String(open));
+    menu.addEventListener('click', function (event) {
+      event.stopPropagation();
+      nav.classList.toggle('open');
+      updateMobileMenuLabel();
     });
-    nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-      nav.classList.remove('open');
-      menu.setAttribute('aria-expanded', 'false');
-    }));
-  }
 
-  // ===== 3. Scroll Progress e Reveal =====
-  let ticking = false;
-  const ringProgress = document.querySelector('#cinematic-scroll-ring .ring-progress');
-  const pctEl = document.getElementById('hud-scroll-pct');
-  const ringBtn = document.getElementById('cinematic-scroll-ring');
-  const circumference = 125.66;
-
-  function scrollToTarget(target) {
-    if (lenisInstance && !reducedMotion.matches) {
-      lenisInstance.scrollTo(target, { offset: -72, duration: 1.2 });
-      return;
+    var navLinks = nav.querySelectorAll('a');
+    for (var n = 0; n < navLinks.length; n++) {
+      navLinks[n].addEventListener('click', function () {
+        closeMobileMenu(false);
+      });
     }
-    if (typeof target === 'number') {
-      window.scrollTo({ top: target, behavior: reducedMotion.matches ? 'instant' : 'smooth' });
-    } else if (target && typeof target.scrollIntoView === 'function') {
-      target.scrollIntoView({ behavior: reducedMotion.matches ? 'instant' : 'smooth', block: 'start' });
-    }
-  }
 
-  if (ringBtn) {
-    ringBtn.addEventListener('click', () => scrollToTarget(0));
-  }
-
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', (e) => {
-      const href = anchor.getAttribute('href');
-      if (href === '#inicio') {
-        e.preventDefault();
-        scrollToTarget(0);
-      } else if (href && href.length > 1) {
-        const el = document.querySelector(href);
-        if (el) {
-          e.preventDefault();
-          scrollToTarget(el);
-        }
+    document.addEventListener('click', function (event) {
+      if (nav.classList.contains('open') && headerEl && !headerEl.contains(event.target)) {
+        closeMobileMenu(false);
       }
     });
+
+    window.addEventListener('resize', function () {
+      if (window.innerWidth > 900 && nav.classList.contains('open')) {
+        closeMobileMenu(false);
+      }
+    }, { passive: true });
+  }
+
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+      if (langDropdownEl && langDropdownEl.classList.contains('is-open')) {
+        toggleLanguageMenu(false);
+        if (langMenuToggleEl) langMenuToggleEl.focus();
+      }
+      if (nav && nav.classList.contains('open')) {
+        closeMobileMenu(true);
+      }
+    }
   });
+
+  // ===== 3. Rolagem compatível, barra de progresso e reveal progressivo =====
+  var ticking = false;
+
+  function scrollToTarget(target, focusAfter) {
+    if (lenisInstance && !reducedMotion.matches) {
+      lenisInstance.scrollTo(target, { offset: -72, duration: 1.2 });
+      if (focusAfter && target && typeof target.focus === 'function') {
+        target.focus({ preventScroll: true });
+      }
+      return;
+    }
+
+    if (typeof target === 'number') {
+      if (reducedMotion.matches) {
+        window.scrollTo(0, target);
+      } else {
+        try {
+          window.scrollTo({ top: target, behavior: 'smooth' });
+        } catch (e) {
+          window.scrollTo(0, target);
+        }
+      }
+      return;
+    }
+
+    if (target && typeof target.getBoundingClientRect === 'function') {
+      var headerOffset = headerEl ? headerEl.offsetHeight + 12 : 84;
+      var topY = Math.max(0, Math.round(window.pageYOffset + target.getBoundingClientRect().top - headerOffset));
+      if (reducedMotion.matches) {
+        window.scrollTo(0, topY);
+      } else {
+        try {
+          window.scrollTo({ top: topY, behavior: 'smooth' });
+        } catch (e) {
+          window.scrollTo(0, topY);
+        }
+      }
+      if (focusAfter && typeof target.focus === 'function') {
+        try {
+          target.focus({ preventScroll: true });
+        } catch (e) {
+          target.focus();
+        }
+      }
+    }
+  }
+
+  var hashAnchors = document.querySelectorAll('a[href^="#"]');
+  for (var h = 0; h < hashAnchors.length; h++) {
+    (function (anchor) {
+      anchor.addEventListener('click', function (e) {
+        var href = anchor.getAttribute('href');
+        if (href === '#inicio') {
+          e.preventDefault();
+          scrollToTarget(0, false);
+        } else if (href && href.length > 1) {
+          var el = document.querySelector(href);
+          if (el) {
+            e.preventDefault();
+            scrollToTarget(el, anchor.classList.contains('skip'));
+          }
+        }
+      });
+    })(hashAnchors[h]);
+  }
 
   function onScroll() {
     if (ticking) return;
     ticking = true;
-    requestAnimationFrame(() => {
-      const doc = document.documentElement;
-      const max = doc.scrollHeight - window.innerHeight;
-      const ratio = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+    var update = function () {
+      var doc = document.documentElement;
+      var max = doc.scrollHeight - window.innerHeight;
+      var scrollY = window.pageYOffset || doc.scrollTop || 0;
+      var ratio = max > 0 ? Math.min(1, Math.max(0, scrollY / max)) : 0;
       root.style.setProperty('--progress', String(ratio));
-      root.style.setProperty('--scroll-progress', `${(ratio * 100).toFixed(2)}%`);
-      if (ringProgress) ringProgress.style.strokeDashoffset = (circumference * (1 - ratio)).toFixed(2);
-      if (pctEl) pctEl.textContent = String(Math.round(ratio * 100)).padStart(2, '0');
       ticking = false;
-    });
+    };
+    if (typeof window.requestAnimationFrame === 'function') {
+      window.requestAnimationFrame(update);
+    } else {
+      update();
+    }
   }
+
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll, { passive: true });
   onScroll();
 
+  var revealTargets = document.querySelectorAll('.reveal, .map-panel');
   if ('IntersectionObserver' in window && !reducedMotion.matches) {
-    const observer = new IntersectionObserver(entries => entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in');
-        observer.unobserve(entry.target);
-      }
-    }), { threshold: 0.07, rootMargin: '0px 0px -45px 0px' });
-    document.querySelectorAll('.reveal, .map-panel').forEach(el => observer.observe(el));
+    root.classList.add('js-reveal');
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.07, rootMargin: '0px 0px -45px 0px' });
+    for (var r = 0; r < revealTargets.length; r++) {
+      observer.observe(revealTargets[r]);
+    }
   } else {
-    document.querySelectorAll('.reveal, .map-panel').forEach(el => el.classList.add('in'));
+    for (var r2 = 0; r2 < revealTargets.length; r2++) {
+      revealTargets[r2].classList.add('in');
+    }
   }
 
   // ===== 4. Filtros de Notícias & Mapa Interativo =====
-  filterBtns.forEach(btn => btn.addEventListener('click', () => {
-    const filter = btn.dataset.filter;
-    filterBtns.forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
-    stories.forEach(card => { card.hidden = filter !== 'all' && card.dataset.type !== filter; });
-  }));
-
-  marks.forEach(mark => {
-    const choose = () => { selectedMark = mark.dataset.spot; drawTooltip(selectedMark); };
-    mark.addEventListener('click', choose);
-    mark.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); choose(); }
+  filterBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var filter = btn.dataset.filter;
+      filterBtns.forEach(function (b) { b.setAttribute('aria-pressed', String(b === btn)); });
+      stories.forEach(function (card) { card.hidden = filter !== 'all' && card.dataset.type !== filter; });
     });
   });
 
-  layers.forEach(btn => btn.addEventListener('click', () => {
-    activeLayer = btn.dataset.layer;
-    selectedMark = null;
-    layers.forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
-    marks.forEach(m => {
-      const dim = activeLayer !== 'all' && m.dataset.category !== activeLayer;
-      m.classList.toggle('dim', dim);
-      m.setAttribute('tabindex', dim ? '-1' : '0');
-      m.setAttribute('aria-hidden', String(dim));
+  marks.forEach(function (mark) {
+    var choose = function () {
+      selectedMark = mark.dataset.spot;
+      drawTooltip(selectedMark, false);
+    };
+    mark.addEventListener('click', choose);
+    mark.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        choose();
+      }
     });
-    drawTooltip(activeLayer === 'all' ? 'all' : activeLayer === 'attention' ? 'attentionLayer' : 'support');
-  }));
+  });
 
-  const mapSVG = document.querySelector('.map-area > svg');
-  const zoomInBtn = document.getElementById('zoom-in');
-  const zoomOutBtn = document.getElementById('zoom-out');
+  layers.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      activeLayer = btn.dataset.layer;
+      selectedMark = null;
+      layers.forEach(function (b) { b.setAttribute('aria-pressed', String(b === btn)); });
+      marks.forEach(function (m) {
+        var dim = activeLayer !== 'all' && m.dataset.category !== activeLayer;
+        m.classList.toggle('dim', dim);
+        m.setAttribute('tabindex', dim ? '-1' : '0');
+        m.setAttribute('aria-hidden', String(dim));
+      });
+      drawTooltip(activeLayer === 'all' ? 'all' : activeLayer === 'attention' ? 'attentionLayer' : 'support', false);
+    });
+  });
+
+  var mapSVG = document.querySelector('.map-stage > svg');
+  var zoomInBtn = document.getElementById('zoom-in');
+  var zoomOutBtn = document.getElementById('zoom-out');
   if (mapSVG && zoomInBtn && zoomOutBtn) {
-    let scale = 1;
-    const zoom = (delta) => {
+    var scale = 1;
+    var zoom = function (delta) {
       scale = Math.max(1, Math.min(1.5, Math.round((scale + delta) * 10) / 10));
-      mapSVG.style.transform = `scale(${scale})`;
+      mapSVG.style.transform = 'scale(' + scale + ')';
       mapSVG.style.transformOrigin = '50% 50%';
       mapSVG.style.transition = reducedMotion.matches ? 'none' : 'transform .28s ease';
     };
-    zoomInBtn.addEventListener('click', () => zoom(0.1));
-    zoomOutBtn.addEventListener('click', () => zoom(-0.1));
+    zoomInBtn.addEventListener('click', function () { zoom(0.1); });
+    zoomOutBtn.addEventListener('click', function () { zoom(-0.1); });
   }
 
-  // ===== 5. Animações de Fundo Cinematográficas (Canvas, Cursor, Lenis + GSAP Parallax) =====
-  function initAmbientCartographyCanvas() {
-    if (reducedMotion.matches) return;
-    const canvas = document.createElement('canvas');
-    canvas.id = 'safejy-ambient-canvas';
-    canvas.setAttribute('aria-hidden', 'true');
-    document.body.insertBefore(canvas, document.body.firstChild);
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    let w = 0, h = 0, dpr = 1;
-    const mouse = { x: -9999, y: -9999, active: false };
-    const spacing = 84;
-    const pulses = Array.from({ length: 20 }, (_, i) => ({
-      x: (i * 97) % 1400,
-      y: (i * 131) % 900,
-      vx: (i % 2 === 0 ? 1 : -1) * (0.42 + (i % 4) * 0.14),
-      vy: (i % 3 === 0 ? 0.36 : -0.36) * (0.42 + (i % 5) * 0.11),
-      r: 2 + (i % 3) * 0.9
-    }));
-
-    function resize() {
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
-      w = window.innerWidth;
-      h = window.innerHeight;
-      canvas.width = Math.floor(w * dpr);
-      canvas.height = Math.floor(h * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-
-    resize();
-    window.addEventListener('resize', resize, { passive: true });
-    window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; mouse.active = true; }, { passive: true });
-    window.addEventListener('mouseleave', () => { mouse.active = false; });
-
-    function draw(now) {
-      const isDark = root.dataset.theme === 'dark';
-      const scrollOffset = (window.scrollY * 0.16) % spacing;
-      ctx.clearRect(0, 0, w, h);
-
-      ctx.lineWidth = 1;
-      const baseLine = isDark ? 'rgba(146, 233, 86, 0.055)' : 'rgba(8, 124, 59, 0.048)';
-      ctx.strokeStyle = baseLine;
-      ctx.beginPath();
-      for (let x = 0; x <= w; x += spacing) { ctx.moveTo(x, 0); ctx.lineTo(x, h); }
-      for (let y = -scrollOffset; y <= h; y += spacing) { ctx.moveTo(0, y); ctx.lineTo(w, y); }
-      ctx.stroke();
-
-      for (let i = 0; i < pulses.length; i++) {
-        const p = pulses[i];
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.x < -20) p.x = w + 20;
-        if (p.x > w + 20) p.x = -20;
-        if (p.y < -20) p.y = h + 20;
-        if (p.y > h + 20) p.y = -20;
-
-        for (let j = i + 1; j < pulses.length; j++) {
-          const q = pulses[j];
-          const dist = Math.hypot(p.x - q.x, p.y - q.y);
-          if (dist < 155) {
-            const alpha = (1 - dist / 155) * (isDark ? 0.22 : 0.15);
-            ctx.strokeStyle = isDark ? `rgba(146, 233, 86, ${alpha.toFixed(3)})` : `rgba(8, 124, 59, ${alpha.toFixed(3)})`;
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(q.x, q.y);
-            ctx.stroke();
-          }
-        }
-        const glow = 0.26 + 0.14 * Math.sin(now * 0.002 + i);
-        ctx.fillStyle = isDark ? `rgba(146, 233, 86, ${glow.toFixed(2)})` : `rgba(8, 124, 59, ${glow.toFixed(2)})`;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      window.requestAnimationFrame(draw);
-    }
-    window.requestAnimationFrame(draw);
-  }
-
+  // ===== 5. Parallax e rolagem suave opcionais (carregamento não bloqueante) =====
   function initCinematicBackgroundMotion() {
     if (reducedMotion.matches) return;
     if (typeof window.Lenis === 'function') {
       lenisInstance = new window.Lenis({
         duration: 1.25,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        easing: function (t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
         smoothWheel: true,
         wheelMultiplier: 0.92,
         touchMultiplier: 1.3
@@ -475,24 +622,24 @@
     }
 
     if (typeof window.gsap !== 'undefined' && typeof window.ScrollTrigger !== 'undefined') {
-      const gsap = window.gsap;
-      const ScrollTrigger = window.ScrollTrigger;
+      var gsap = window.gsap;
+      var ScrollTrigger = window.ScrollTrigger;
       gsap.registerPlugin(ScrollTrigger);
       if (lenisInstance) {
-        gsap.ticker.add((time) => lenisInstance.raf(time * 1000));
+        gsap.ticker.add(function (time) { lenisInstance.raf(time * 1000); });
         gsap.ticker.lagSmoothing(0);
       }
 
-      const openingMist = document.querySelector('.hero-opening-mist');
+      var openingMist = document.querySelector('.hero-opening-mist');
       if (openingMist) {
         gsap.fromTo(openingMist, { opacity: 0.72 }, { opacity: 0.36, duration: 1.6, ease: 'power3.out' });
       }
 
-      gsap.matchMedia().add('(min-width: 768px)', () => {
-        gsap.utils.toArray('.cine-scene [data-parallax-speed]').forEach((layer) => {
-          const speed = parseFloat(layer.dataset.parallaxSpeed || '0');
+      gsap.matchMedia().add('(min-width: 768px)', function () {
+        gsap.utils.toArray('.cine-scene [data-parallax-speed]').forEach(function (layer) {
+          var speed = parseFloat(layer.dataset.parallaxSpeed || '0');
           if (!speed) return;
-          const parentScene = layer.closest('.cine-scene');
+          var parentScene = layer.closest('.cine-scene');
           gsap.to(layer, {
             yPercent: speed * 100,
             ease: 'none',
@@ -500,7 +647,7 @@
           });
         });
 
-        const problemImg = document.querySelector('.problem-zoom-bg img');
+        var problemImg = document.querySelector('.problem-zoom-bg img');
         if (problemImg) {
           gsap.fromTo(problemImg, { scale: 1 }, {
             scale: 1.15,
@@ -509,7 +656,7 @@
           });
         }
 
-        const solutionBg = document.querySelector('.solution-orbit-bg');
+        var solutionBg = document.querySelector('.solution-orbit-bg');
         if (solutionBg) {
           gsap.fromTo(solutionBg, { rotate: -2, scale: 1.08 }, {
             rotate: 2.2,
@@ -520,24 +667,76 @@
         }
       });
     } else if (lenisInstance) {
-      const raf = (time) => { lenisInstance.raf(time); window.requestAnimationFrame(raf); };
+      var raf = function (time) { lenisInstance.raf(time); window.requestAnimationFrame(raf); };
       window.requestAnimationFrame(raf);
     }
   }
 
-  let initialTheme = 'light';
+  function loadScriptAsync(src, onDone) {
+    var s = document.createElement('script');
+    s.src = src;
+    s.async = true;
+    s.onload = function () { if (onDone) onDone(true); };
+    s.onerror = function () { if (onDone) onDone(false); };
+    document.head.appendChild(s);
+  }
+
+  function maybeLoadOptionalEnhancements() {
+    if (root.dataset.offline === 'true') return;
+    if (reducedMotion.matches) return;
+    if (window.innerWidth < 768) return;
+    if (typeof navigator !== 'undefined' && navigator.onLine === false) return;
+
+    var lenisLoaded = typeof window.Lenis === 'function';
+    var gsapLoaded = typeof window.gsap !== 'undefined' && typeof window.ScrollTrigger !== 'undefined';
+    if (lenisLoaded && gsapLoaded) {
+      initCinematicBackgroundMotion();
+      return;
+    }
+
+    var pending = 2;
+    var doneOne = function () {
+      pending -= 1;
+      if (pending === 0) initCinematicBackgroundMotion();
+    };
+
+    loadScriptAsync('https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js', doneOne);
+    loadScriptAsync('https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js', function (ok) {
+      if (ok) {
+        loadScriptAsync('https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js', doneOne);
+      } else {
+        doneOne();
+      }
+    });
+  }
+
+  // ===== Inicialização imediata (zero dependência externa) =====
+  var initialTheme = 'light';
   try {
-    const savedTheme = localStorage.getItem('safejy-theme');
-    if (savedTheme === 'dark' || savedTheme === 'light') initialTheme = savedTheme;
-    else if (root.dataset.theme === 'dark') initialTheme = 'dark';
-  } catch (e) { }
+    var savedTheme = localStorage.getItem('safejy-theme');
+    if (savedTheme === 'dark' || savedTheme === 'light') {
+      initialTheme = savedTheme;
+    } else if (root.dataset.theme === 'dark' || prefersDarkQuery.matches) {
+      initialTheme = 'dark';
+    }
+  } catch (e) {
+    if (root.dataset.theme === 'dark' || prefersDarkQuery.matches) initialTheme = 'dark';
+  }
   setTheme(initialTheme);
 
-  let savedLang = 'pt';
+  var savedLang = 'pt';
   try { savedLang = localStorage.getItem('safejy-lang') || 'pt'; } catch (e) { }
-  const urlLang = new URLSearchParams(location.search).get('lang');
-  setLanguage(urlLang || savedLang);
+  var urlLang = null;
+  try {
+    if (typeof URLSearchParams === 'function') {
+      urlLang = new URLSearchParams(window.location.search).get('lang');
+    }
+  } catch (e) { }
+  setLanguage(urlLang || savedLang, true);
 
-  initAmbientCartographyCanvas();
-  initCinematicBackgroundMotion();
+  if (document.readyState === 'complete') {
+    maybeLoadOptionalEnhancements();
+  } else {
+    window.addEventListener('load', maybeLoadOptionalEnhancements, { once: true });
+  }
 })();

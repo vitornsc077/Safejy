@@ -1,53 +1,39 @@
-SAFEJY — Landing page
+SAFEJY — Landing page conceitual ("Cada segundo conta.")
 
 ESTRUTURA DE PASTAS
-- index.html: página principal da landing page.
-- assets/css/styles.css: temas, identidade visual e layout responsivo.
-- assets/js/script.js: tradução em inglês, tema e navegação interna.
-- assets/images/: logos, imagens das notícias e favicon.
-- dist/SAFEJY.html: versão que reúne todo o projeto em um único arquivo autônomo.
+- index.html: página principal da landing page (estrutura e conteúdo em português).
+- assets/css/styles.css: identidade visual, temas claro/escuro, layout responsivo e impressão.
+- assets/js/script.js: tradução completa PT/EN, tema claro/escuro, filtros de notícias e mapa interativo.
+- assets/images/: logotipos (claro e escuro), favicons e fotografias de fundo otimizadas (WebP e JPEG).
+- manual-da-marca/: Manual da Marca v2.0 (HTML, CSS e PDF).
+- dist/SAFEJY.html: versão em arquivo único 100% offline (sem fontes ou scripts externos).
 - docs/LEIA-ME.txt: este documento de apoio.
 
 COMO ABRIR
 Abra index.html no Chrome, Edge, Safari ou Firefox.
 Mantenha a pasta assets/ junto com index.html.
-A versão dist/SAFEJY.html reúne tudo em um único arquivo.
-Não é necessário instalar nada. A página funciona offline.
-As fotos das notícias estão incorporadas à versão dist/SAFEJY.html e funcionam offline.
-Os links para ler as matérias originais exigem conexão com a internet.
+Para apresentações sem acesso à internet, abra dist/SAFEJY.html: todo o CSS, JavaScript e imagens estão embutidos e nenhuma biblioteca ou fonte externa é carregada.
+Apenas os links externos para ler as matérias originais na íntegra exigem conexão com a internet.
 
 COMO USAR
-PT / EN alterna o idioma de toda a página.
-O botão de lua/sol alterna os temas claro e escuro. O claro é o padrão.
-A última escolha de tema é lembrada quando o navegador permite.
-“Notícias e fontes” leva à seção “Por que existimos”.
-“Ver análise da rota” leva ao exemplo ilustrativo no mapa.
+- Seletor de idioma (ícone de globo no topo): alterna toda a página e rótulos de acessibilidade entre Português (PT) e English (EN), com navegação por teclado (Setas, Home, End e Esc).
+- Botão de tema (lua/sol): alterna entre modo claro e modo escuro. Na primeira visita, o site respeita a preferência do sistema (prefers-color-scheme); escolhas manuais ficam salvas no navegador.
+- Menu principal: navega pelas seções "O problema", "A plataforma", "Notícias reais" e "Nossa visão". Em telas menores, abre pelo botão de menu e fecha com a tecla Esc.
+- Mapa interativo ("A plataforma"): filtre por "Todos", "Alertas" ou "Pontos de apoio", clique ou use o teclado nos marcadores coloridos e utilize os botões + e − para zoom ilustrativo.
+- Notícias reais: filtre as reportagens por "Todas as notícias", "Mobilidade" ou "Vida urbana".
 
 ESCOPO
-O mapa mostra uma única rota fictícia sinalizada como “Rota com risco”.
-A proposta é indicar a segurança do trajeto. Não há troca de rota.
-O exemplo não consulta GPS nem dados reais e não serve para navegação.
-O app, as fontes de dados e os critérios de avaliação ainda serão desenvolvidos.
+O mapa demonstra a proposta de interface com percurso e marcadores fictícios.
+Não consulta GPS, não exibe ocorrências em tempo real e não substitui serviços de emergência ou órgãos de segurança pública.
 
-FONTES — consultadas em 05/11/2026
-CNN Brasil — 24/07/2025 — Roubos e furtos de celulares na capital em 2024:
-https://www.cnnbrasil.com.br/nacional/sudeste/sp/sao-paulo-tem-185-de-todos-os-roubos-e-furtos-de-celulares-do-brasil/
-FECAP — 09/02/2026 — Estudo sobre ocorrências em 2025:
-https://www.fecap.br/2026/02/09/roubos-e-furtos-de-celulares-caem-905-em-sp-em-2025-veja-cidades-bairros-e-locais-com-mais-ocorrencias/
-Secretaria da Segurança Pública de São Paulo — 01/06/2026 — Roubos de celulares no primeiro quadrimestre:
-https://www.ssp.sp.gov.br/noticia/60440
-
-EDIÇÃO
-index.html: conteúdo em português e estrutura.
-assets/css/styles.css: temas, identidade visual e layout responsivo.
-assets/js/script.js: tradução em inglês, tema e navegação interna.
-assets/images/logo-safejy.png: logo fornecida pela equipe com fundo transparente.
-
-IMAGENS DAS NOTÍCIAS
-As fotos vêm das respectivas publicações. Os créditos estão abaixo das imagens.
-CNN Brasil — Divulgação/SSP:
-https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2025/06/00059166-e1750683119399.jpg?w=827&h=414&crop=1
-FECAP — Imagem ilustrativa de Freepik:
-https://www.fecap.br/wp-content/uploads/2026/02/Roubos-e-furtos-de-celulares-caem-905-em-SP-em-2025-600x400.jpg
-SSP-SP:
-https://www.ssp.sp.gov.br/assets/noticias/midia/Imagem/00061402.jpg
+FONTES EDITORIAIS — seleção verificada em 15/11/2026
+1. CNN Brasil — 08/10/2026 — Levantamento reúne registros de crimes contra motoristas de aplicativo em SP:
+   https://www.cnnbrasil.com.br/nacional/sudeste/sp/jardim-angela-e-bras-sao-os-bairros-mais-perigosos-para-motoristas-de-app/
+2. SSP-SP — 29/10/2026 — Polícia prende suspeitos de extorsão a passageiros na Barra Funda:
+   https://www.ssp.sp.gov.br/noticia/61006
+3. Agência Brasil — 04/11/2026 — Roubos de celulares caem 19,3% em São Paulo entre janeiro e setembro:
+   https://agenciabrasil.ebc.com.br/geral/noticia/2026-11/estado-de-sp-tem-queda-em-roubos-de-celulares-entre-janeiro-e-setembro
+4. Metrópoles — 09/11/2026 — Crimes com celulares crescem em 17 distritos policiais da capital:
+   https://www.metropoles.com/sao-paulo/veja-quais-bairros-tiveram-aumento-nos-furtos-e-roubos-de-celular-em-sp
+5. Consulta de estatísticas oficiais — SSP-SP:
+   https://www.ssp.sp.gov.br/estatistica/pesquisa.aspx

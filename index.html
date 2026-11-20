@@ -7,55 +7,73 @@
   <meta name="theme-color" content="#f5f7f6">
   <meta name="color-scheme" content="only light">
   <script>
-    try {
-      if (localStorage.getItem("safejy-theme") === "dark") {
-        document.documentElement.dataset.theme = "dark";
-        var csMeta = document.querySelector('meta[name="color-scheme"]');
-        if (csMeta) csMeta.content = "dark";
-      }
-      if (localStorage.getItem("safejy-lang") === "en") {
-        document.documentElement.lang = "en";
-      }
-    } catch (error) { }
+    (function () {
+      try {
+        var savedTheme = localStorage.getItem("safejy-theme");
+        var prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
+          document.documentElement.dataset.theme = "dark";
+          var csMeta = document.querySelector('meta[name="color-scheme"]');
+          if (csMeta) csMeta.content = "dark";
+          var tcMeta = document.querySelector('meta[name="theme-color"]');
+          if (tcMeta) tcMeta.content = "#0D1812";
+        }
+        if (localStorage.getItem("safejy-lang") === "en") {
+          document.documentElement.lang = "en";
+        }
+      } catch (error) { }
+    })();
   </script>
   <meta name="description"
     content="Safejy é um conceito de plataforma de informação para quem circula por regiões desconhecidas. Dados, notícias verificadas e contexto para decisões mais conscientes.">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://safejy.vercel.app/">
   <meta property="og:site_name" content="Safejy">
   <meta property="og:title" content="Safejy — Cada segundo conta.">
   <meta property="og:description"
     content="O Safejy conecta pessoas, dados e notícias verificadas para você entender melhor por onde circula.">
-  <meta property="og:image" content="assets/images/logo-lockup.png">
+  <meta property="og:image" content="https://safejy.vercel.app/assets/images/logo-lockup.png">
+  <meta property="og:image:width" content="679">
+  <meta property="og:image:height" content="178">
+  <meta name="twitter:card" content="summary_large_image">
   <title>Safejy — Cada segundo conta.</title>
-  <link rel="icon" href="favicon.ico?v=3" sizes="any">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.png?v=3">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.png?v=3">
-  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg?v=3">
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png?v=3">
+  <link rel="icon" href="favicon.ico?v=4" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.png?v=4">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.png?v=4">
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg?v=4">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png?v=4">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Gelasio:ital,wght@0,400;0,500;0,600;0,700;1,600&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Serif:wght@400;600;700;800&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.css?v=25">
-  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
-  <script src="assets/js/script.js?v=24" defer></script>
+  <link rel="stylesheet" href="assets/css/styles.css?v=26">
+  <noscript>
+    <style>
+      .reveal, .map-panel { opacity: 1 !important; transform: none !important; filter: none !important; }
+      .hero-route, .map-panel .map-route { stroke-dasharray: none !important; stroke-dashoffset: 0 !important; animation: none !important; }
+    </style>
+  </noscript>
+  <script src="assets/js/script.js?v=25" defer></script>
 </head>
 
 <body>
-  <a class="skip" href="#inicio">Pular para o conteúdo</a>
+  <a class="skip" href="#conteudo">Pular para o conteúdo</a>
 
-  <!-- Atmosfera Global Cinematográfica (Grão sutil de filme + Vinheta periférica) -->
-  <div class="cinematic-film-grain" aria-hidden="true"></div>
+  <!-- Vinheta periférica sutil -->
   <div class="cinematic-vignette" aria-hidden="true"></div>
 
   <header class="header" id="inicio">
     <div class="wrap head-inner">
       <a class="logo" href="#inicio" aria-label="Safejy: início">
-        <img class="logo-lockup logo-light" src="assets/images/logo-lockup.png" alt="Safejy">
-        <img class="logo-lockup logo-dark" src="assets/images/logo-lockup-dark.png" alt="Safejy">
+        <picture class="logo-picture logo-light">
+          <source srcset="assets/images/logo-lockup.webp" type="image/webp">
+          <img class="logo-lockup" src="assets/images/logo-lockup.png" alt="Safejy" width="679" height="178">
+        </picture>
+        <picture class="logo-picture logo-dark">
+          <source srcset="assets/images/logo-lockup-dark.webp" type="image/webp">
+          <img class="logo-lockup" src="assets/images/logo-lockup-dark.png" alt="Safejy" width="679" height="178">
+        </picture>
       </a>
 
       <nav class="nav-links" id="navigation" aria-label="Navegação principal">
@@ -67,9 +85,13 @@
 
       <div class="header-end">
         <div id="lang-dropdown" class="languages">
-          <button type="button" id="lang-menu-toggle" class="lang-menu-toggle" aria-haspopup="true"
+          <button type="button" id="lang-menu-toggle" class="lang-menu-toggle" aria-haspopup="menu"
             aria-expanded="false" aria-controls="lang-menu" aria-label="Selecionar idioma" title="Selecionar idioma">
-            <img class="lang-icon" src="assets/images/translate-icon.svg" alt="" width="22" height="22" aria-hidden="true">
+            <svg class="lang-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+              <circle cx="12" cy="12" r="9.5" />
+              <ellipse cx="12" cy="12" rx="4.2" ry="9.5" />
+              <path d="M2.8 9.2h18.4M2.8 14.8h18.4" />
+            </svg>
             <svg class="lang-caret" viewBox="0 0 12 12" aria-hidden="true">
               <path d="M2.5 4.5L6 8L9.5 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
                 stroke-linejoin="round" />
@@ -77,13 +99,13 @@
           </button>
           <div id="lang-menu" class="lang-menu" role="menu" aria-label="Idioma / Language">
             <button type="button" class="lang-option" role="menuitemradio" data-lang="pt" aria-checked="true"
-              aria-pressed="true" lang="pt-BR" aria-label="Mudar para português">
+              tabindex="-1" lang="pt-BR" aria-label="Mudar para português">
               <span>Português</span>
               <span class="lang-option-code">PT</span>
             </button>
             <button type="button" class="lang-option" role="menuitemradio" data-lang="en" aria-checked="false"
-              aria-pressed="false" lang="en" aria-label="Switch to English">
-              <span>Inglês</span>
+              tabindex="-1" lang="en" aria-label="Switch to English">
+              <span>English</span>
               <span class="lang-option-code">EN</span>
             </button>
           </div>
@@ -102,7 +124,8 @@
         <a class="header-cta" href="#plataforma">Explorar a ideia ↗</a>
         <button class="mobile-menu" type="button" aria-label="Abrir menu" aria-controls="navigation"
           aria-expanded="false">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+            aria-hidden="true">
             <path d="M3 7h18M3 12h18M3 17h18" />
           </svg>
         </button>
@@ -110,12 +133,19 @@
     </div>
   </header>
 
-  <main>
+  <main id="conteudo" tabindex="-1">
     <!-- CENA 01: HERO (Fundo fotográfico Av. Paulista ao amanhecer + Conteúdo e Dashboard Safejy) -->
     <section class="hero cine-scene" data-scene="01" aria-labelledby="main-title">
       <div class="scene-backdrop" aria-hidden="true">
         <div class="scene-bg-layer scene-bg-dawn" data-parallax-speed="-0.14">
-          <img src="assets/images/sp-paulista-dawn.jpg" alt="" loading="eager" decoding="async">
+          <picture>
+            <source type="image/webp"
+              srcset="assets/images/sp-paulista-dawn-mobile.webp 768w, assets/images/sp-paulista-dawn.webp 1376w"
+              sizes="100vw">
+            <img src="assets/images/sp-paulista-dawn.jpg"
+              srcset="assets/images/sp-paulista-dawn-mobile.jpg 768w, assets/images/sp-paulista-dawn.jpg 1376w"
+              sizes="100vw" width="1376" height="768" alt="" loading="eager" decoding="async" fetchpriority="high">
+          </picture>
         </div>
         <svg class="scene-mid-layer scene-topo-contours" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice"
           data-parallax-speed="-0.22">
@@ -123,8 +153,8 @@
             stroke-opacity="0.2" stroke-dasharray="6 8" />
           <path d="M-80 760 Q 420 630, 820 710 T 1520 600" fill="none" stroke="currentColor" stroke-width="0.9"
             stroke-opacity="0.14" />
-          <circle cx="1120" cy="240" r="180" fill="none" stroke="currentColor" stroke-width="0.9"
-            stroke-opacity="0.14" stroke-dasharray="4 7" />
+          <circle cx="1120" cy="240" r="180" fill="none" stroke="currentColor" stroke-width="0.9" stroke-opacity="0.14"
+            stroke-dasharray="4 7" />
         </svg>
         <div class="scene-mist-layer scene-mist-dawn hero-opening-mist"></div>
       </div>
@@ -136,7 +166,8 @@
           </div>
           <h1 id="main-title">Cada<br>segundo<br><em>conta.</em></h1>
           <p class="hero-sub">Uma cidade desconhecida não precisa ser uma cidade sem informação. O Safejy conecta
-            <strong>pessoas, dados e notícias verificadas</strong> para você entender melhor por onde circula.</p>
+            <strong>pessoas, dados e notícias verificadas</strong> para você entender melhor por onde circula.
+          </p>
           <div class="hero-actions">
             <a class="button" href="#plataforma">Descubra o Safejy <span class="arrow">↗</span></a>
             <a class="button secondary" href="#noticias">Ver notícias verificadas <span class="arrow">↗</span></a>
@@ -152,29 +183,32 @@
         </div>
 
         <div class="hero-art" aria-label="Prévia ilustrativa da interface do Safejy">
-          <div class="art-glow"></div>
+          <div class="art-glow" aria-hidden="true"></div>
           <div class="dash">
             <div class="dash-header">
-              <span class="window-dots"><i></i><i></i><i></i></span>
+              <span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span>
               <span class="micro">safejy / visão do território</span>
-              <span class="micro" style="color:var(--green)">● PRÉVIA</span>
+              <span class="micro dash-status">● PRÉVIA</span>
             </div>
             <div class="dash-body">
-              <aside class="dash-side">
+              <div class="dash-side" aria-hidden="true">
                 <b>safejy.</b>
                 <div class="side-item active"><span class="side-square"></span>Visão geral</div>
                 <div class="side-item"><span class="side-square"></span>Fontes</div>
                 <div class="side-item"><span class="side-square"></span>Notícias</div>
                 <div class="side-item"><span class="side-square"></span>Apoio</div>
-              </aside>
+              </div>
               <div class="dash-map">
                 <svg class="map-svg" viewBox="0 0 430 402" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
                   <rect width="430" height="402" fill="#f9faf9" />
-                  <path d="M-70 45L512 335M-35 118L470 370M-48 198L430 449M0-50L430 230M0 310L470 20M-20 390L370-20M130 445L444 75"
+                  <path
+                    d="M-70 45L512 335M-35 118L470 370M-48 198L430 449M0-50L430 230M0 310L470 20M-20 390L370-20M130 445L444 75"
                     stroke="#e7ece9" stroke-width="19" />
-                  <path d="M-70 45L512 335M-35 118L470 370M-48 198L430 449M0-50L430 230M0 310L470 20M-20 390L370-20M130 445L444 75"
+                  <path
+                    d="M-70 45L512 335M-35 118L470 370M-48 198L430 449M0-50L430 230M0 310L470 20M-20 390L370-20M130 445L444 75"
                     stroke="white" stroke-width="12" />
-                  <path d="M-30 20H490M-30 95H490M-30 171H490M-30 250H490M-30 330H490" stroke="#e2e7e4" stroke-width="12" />
+                  <path d="M-30 20H490M-30 95H490M-30 171H490M-30 250H490M-30 330H490" stroke="#e2e7e4"
+                    stroke-width="12" />
                   <path d="M-30 20H490M-30 95H490M-30 171H490M-30 250H490M-30 330H490" stroke="#fff" stroke-width="8" />
                   <path d="M105-30V460M235-30V460M355-30V460" stroke="#e1e6e4" stroke-width="11" />
                   <path d="M105-30V460M235-30V460M355-30V460" stroke="#fff" stroke-width="7" />
@@ -198,14 +232,14 @@
                   </g>
                 </svg>
                 <div class="float-tag one">
-                  <i></i>
+                  <i aria-hidden="true"></i>
                   <div>
                     <strong>Ocorrência publicada</strong>
                     <span>Verifique a fonte original</span>
                   </div>
                 </div>
                 <div class="float-tag two">
-                  <i></i>
+                  <i aria-hidden="true"></i>
                   <div>
                     <strong>Referências úteis</strong>
                     <span>Informações com origem</span>
@@ -216,9 +250,9 @@
           </div>
           <div class="mini-card">
             <span class="micro">INFORMAÇÃO VERIFICADA</span>
-            <div class="big-number">01<span style="font-size:19px;color:#a9a7ff">/03</span></div>
+            <div class="big-number">01<span class="big-number-sub">/03</span></div>
             <small>Fontes e contexto reunidos em um só lugar.</small>
-            <div class="bars">
+            <div class="bars" aria-hidden="true">
               <span></span><span></span><span></span><span></span><span></span><span></span>
             </div>
           </div>
@@ -230,21 +264,21 @@
     <section class="divider-info" aria-label="Pilares do projeto">
       <div class="wrap divider-inner">
         <div class="divider-cell">
-          <span class="divider-icon">↗</span>
+          <span class="divider-icon" aria-hidden="true">↗</span>
           <div>
             <strong>01 / Entender</strong>
             <span>Antes de sair ou aceitar uma corrida.</span>
           </div>
         </div>
         <div class="divider-cell">
-          <span class="divider-icon">◎</span>
+          <span class="divider-icon" aria-hidden="true">◎</span>
           <div>
             <strong>02 / Verificar</strong>
             <span>Com dados e fontes identificadas.</span>
           </div>
         </div>
         <div class="divider-cell">
-          <span class="divider-icon">✳</span>
+          <span class="divider-icon" aria-hidden="true">✳</span>
           <div>
             <strong>03 / Decidir</strong>
             <span>Com mais contexto, sem alarmismo.</span>
@@ -257,13 +291,20 @@
     <section class="why cine-scene" id="proposito" data-scene="02">
       <div class="scene-backdrop" aria-hidden="true">
         <div class="scene-bg-layer scene-bg-aerial" data-parallax-speed="-0.16">
-          <img src="assets/images/sp-skyline-aerial.jpg" alt="" loading="lazy" decoding="async">
+          <picture>
+            <source type="image/webp"
+              srcset="assets/images/sp-skyline-aerial-mobile.webp 768w, assets/images/sp-skyline-aerial.webp 1376w"
+              sizes="100vw">
+            <img src="assets/images/sp-skyline-aerial.jpg"
+              srcset="assets/images/sp-skyline-aerial-mobile.jpg 768w, assets/images/sp-skyline-aerial.jpg 1376w"
+              sizes="100vw" width="1376" height="768" alt="" loading="lazy" decoding="async">
+          </picture>
         </div>
         <svg class="scene-mid-layer essence-vector-map" viewBox="0 0 1440 860" preserveAspectRatio="xMidYMid slice"
           data-parallax-speed="-0.32">
           <g fill="none" stroke="currentColor" stroke-linecap="round">
-            <path d="M120 740 C 380 560, 640 480, 960 360 S 1260 210, 1380 140" stroke-width="1.6"
-              stroke-opacity="0.34" stroke-dasharray="10 8" />
+            <path d="M120 740 C 380 560, 640 480, 960 360 S 1260 210, 1380 140" stroke-width="1.6" stroke-opacity="0.34"
+              stroke-dasharray="10 8" />
             <path d="M80 420 C 440 430, 720 350, 1140 520" stroke-width="1.2" stroke-opacity="0.22" />
             <circle cx="430" cy="528" r="5" fill="currentColor" fill-opacity="0.45" />
             <circle cx="960" cy="360" r="7" fill="var(--lime-accent)" fill-opacity="0.7" />
@@ -276,12 +317,12 @@
       <div class="wrap why-layout cine-scene-inner">
         <div class="reveal">
           <span class="eyebrow">01 / O problema</span>
-          <h2 class="section-title">O risco não<br>avisa quando<br>vai aparecer<span style="color:var(--violet)">.</span></h2>
+          <h2 class="section-title">O risco não<br>avisa quando<br>vai aparecer<span class="title-accent">.</span></h2>
           <p class="section-intro">O que fazer quando você chega a um bairro que não conhece? Nem sempre é simples
             descobrir o que aconteceu recentemente por lá — e a informação costuma estar espalhada entre notícias,
             portais e órgãos públicos.</p>
           <div class="small-flag">
-            <span class="traffic"><i></i><i></i><i></i></span>
+            <span class="traffic" aria-hidden="true"><i></i><i></i><i></i></span>
             <span>Informação não é medo. É possibilidade de escolha.</span>
           </div>
         </div>
@@ -298,7 +339,8 @@
             <span class="why-index">02</span>
             <div>
               <h3>Para moradores</h3>
-              <p>Notícias locais e indicadores reunidos com transparência, sem transformar bairros inteiros em rótulos.</p>
+              <p>Notícias locais e indicadores reunidos com transparência, sem transformar bairros inteiros em rótulos.
+              </p>
             </div>
           </div>
           <div class="why-item">
@@ -316,7 +358,14 @@
     <section class="preview cine-scene" id="plataforma" data-scene="04">
       <div class="scene-backdrop" aria-hidden="true">
         <div class="scene-bg-layer scene-bg-nightgrid solution-orbit-bg">
-          <img src="assets/images/sp-night-corridor.jpg" alt="" loading="lazy" decoding="async">
+          <picture>
+            <source type="image/webp"
+              srcset="assets/images/sp-night-corridor-mobile.webp 768w, assets/images/sp-night-corridor.webp 1376w"
+              sizes="100vw">
+            <img src="assets/images/sp-night-corridor.jpg"
+              srcset="assets/images/sp-night-corridor-mobile.jpg 768w, assets/images/sp-night-corridor.jpg 1376w"
+              sizes="100vw" width="1376" height="768" alt="" loading="lazy" decoding="async">
+          </picture>
         </div>
         <div class="scene-mist-layer scene-mist-solution"></div>
       </div>
@@ -328,7 +377,8 @@
             <h2 class="section-title">A cidade mais<br>clara, em um lugar.</h2>
           </div>
           <p class="reveal" data-delay="1">Uma visualização organizada de informações relevantes. Abaixo, uma
-            <strong>prévia interativa</strong> de como as camadas podem funcionar no futuro.</p>
+            <strong>prévia interativa</strong> de como as camadas podem funcionar no futuro.
+          </p>
         </div>
 
         <div class="map-panel reveal">
@@ -336,19 +386,20 @@
             <span class="eyebrow">Safejy / laboratório</span>
             <h3>Explore uma<br>visualização.</h3>
             <p>Escolha uma camada para visualizar o percurso e os pontos de apoio. Esta demonstração usa
-              <strong>marcadores fictícios</strong>, sem dados de ocorrências reais.</p>
+              <strong>marcadores fictícios</strong>, sem dados de ocorrências reais.
+            </p>
             <div class="switch-list">
               <button class="switch-option" type="button" data-layer="all" aria-pressed="true">
-                <span class="switch-label"><i></i>Todos</span>
-                <span class="switch-check"></span>
+                <span class="switch-label"><i aria-hidden="true"></i>Todos</span>
+                <span class="switch-check" aria-hidden="true"></span>
               </button>
               <button class="switch-option" type="button" data-layer="attention" aria-pressed="false">
-                <span class="switch-label"><i></i>Alertas</span>
-                <span class="switch-check"></span>
+                <span class="switch-label"><i aria-hidden="true"></i>Alertas</span>
+                <span class="switch-check" aria-hidden="true"></span>
               </button>
               <button class="switch-option" type="button" data-layer="support" aria-pressed="false">
-                <span class="switch-label"><i></i>Pontos de apoio</span>
-                <span class="switch-check"></span>
+                <span class="switch-label"><i aria-hidden="true"></i>Pontos de apoio</span>
+                <span class="switch-check" aria-hidden="true"></span>
               </button>
             </div>
             <div class="panel-bottom">Uma rota real exige dados georreferenciados e atualizados. Aqui, o trajeto e os
@@ -356,77 +407,89 @@
           </div>
 
           <div class="map-area">
-            <svg viewBox="0 0 780 520" preserveAspectRatio="xMidYMid slice" role="img"
-              aria-label="Mapa estilizado demonstrativo com pontos clicáveis">
-              <rect width="780" height="520" fill="#f5f7f6" />
-              <g stroke="#e6ebe8" stroke-width="21" fill="none">
-                <path d="M-50 115L850 115M-50 270L850 270M-50 410L850 410" />
-                <path d="M100-50V600M310-50V600M535-50V600M710-50V600" />
-                <path d="M-130 440L470-95M170 615L900-75M-100 10L710 640" />
-              </g>
-              <g stroke="#fff" stroke-width="15" fill="none">
-                <path d="M-50 115L850 115M-50 270L850 270M-50 410L850 410" />
-                <path d="M100-50V600M310-50V600M535-50V600M710-50V600" />
-                <path d="M-130 440L470-95M170 615L900-75M-100 10L710 640" />
-              </g>
-              <g fill="none" stroke="#eef1ef" stroke-width="7">
-                <path d="M-20 52H850M-20 347H850M-20 483H850M190-20V580M430-20V580M625-20V580" />
-              </g>
-              <path d="M300 50L395 65L415 150L340 205L245 164Z" fill="#e7e4ff" />
-              <path d="M510 275L650 288L690 380L540 445L458 364Z" fill="#ffe8e6" />
-              <path d="M65 310L172 303L230 364L200 475L75 443Z" fill="#dff4eb" />
-              <path class="map-route-shadow"
-                d="M100 410 L100 290 Q100 270 120 270 H290 Q310 270 310 250 V135 Q310 115 330 115 H515 Q535 115 535 135 V250 Q535 270 555 270 H710"
-                fill="none" stroke="#ffffff" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" />
-              <path class="map-route"
-                d="M100 410 L100 290 Q100 270 120 270 H290 Q310 270 310 250 V135 Q310 115 330 115 H515 Q535 115 535 135 V250 Q535 270 555 270 H710"
-                pathLength="100" fill="none" stroke="#5d57e8" stroke-width="8" stroke-linecap="round"
-                stroke-linejoin="round" />
-              <path class="map-route-glint"
-                d="M100 410 L100 290 Q100 270 120 270 H290 Q310 270 310 250 V135 Q310 115 330 115 H515 Q535 115 535 135 V250 Q535 270 555 270 H710"
-                fill="none" stroke="#a9a4ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
-                stroke-dasharray="8 22" />
-              <g class="route-stop" transform="translate(100 410)">
-                <circle r="13" fill="#fff" stroke="#5d57e8" stroke-width="4" />
-                <circle r="4" fill="#5d57e8" />
-              </g>
-              <g class="route-stop" transform="translate(710 270)">
-                <circle r="15" fill="#fff" stroke="#5d57e8" stroke-width="4" />
-                <path d="M-5-5 L6 0 L-5 5 Z" fill="#5d57e8" />
-              </g>
-              <g class="mark" tabindex="0" role="button" aria-label="Demonstração: ponto de apoio ilustrativo"
-                data-spot="info" data-category="support" transform="translate(340 145)">
-                <circle class="pulse" r="38" fill="#6f62ef" opacity=".14" />
-                <circle r="16" fill="#6057e6" stroke="white" stroke-width="5" />
-                <path d="M0-6v7m0 6v.3" stroke="white" stroke-width="3" stroke-linecap="round" />
-              </g>
-              <g class="mark" tabindex="0" role="button" aria-label="Demonstração: aviso ilustrativo"
-                data-spot="attention" data-category="attention" transform="translate(571 350)">
-                <circle class="pulse delayed" r="37" fill="#f17a75" opacity=".15" />
-                <circle r="17" fill="#e9666b" stroke="white" stroke-width="5" />
-                <path d="M0-7v8m0 6v.4" stroke="white" stroke-width="3" stroke-linecap="round" />
-              </g>
-              <g class="mark" tabindex="0" role="button" aria-label="Demonstração: referência útil ilustrativa"
-                data-spot="source" data-category="support" transform="translate(138 379)">
-                <circle class="pulse" r="35" fill="#55bd9c" opacity=".14" />
-                <circle r="16" fill="#35a583" stroke="white" stroke-width="5" />
-                <path d="M-7 0l5 5 9-11" stroke="white" stroke-width="3" stroke-linecap="round" fill="none" />
-              </g>
-            </svg>
-            <div class="map-caption">◉ MAPA INTERATIVO <span>Percurso ilustrativo · sem dados de localização</span></div>
+            <div class="map-caption">◉ MAPA INTERATIVO <span>Percurso ilustrativo · sem dados de localização</span>
+            </div>
+            <div class="map-stage">
+              <svg viewBox="0 0 780 520" preserveAspectRatio="xMidYMid meet" role="img"
+                aria-label="Mapa estilizado demonstrativo com pontos clicáveis">
+                <rect width="780" height="520" fill="#f5f7f6" />
+                <g stroke="#e6ebe8" stroke-width="21" fill="none">
+                  <path d="M-50 115L850 115M-50 270L850 270M-50 410L850 410" />
+                  <path d="M100-50V600M310-50V600M535-50V600M710-50V600" />
+                  <path d="M-130 440L470-95M170 615L900-75M-100 10L710 640" />
+                </g>
+                <g stroke="#fff" stroke-width="15" fill="none">
+                  <path d="M-50 115L850 115M-50 270L850 270M-50 410L850 410" />
+                  <path d="M100-50V600M310-50V600M535-50V600M710-50V600" />
+                  <path d="M-130 440L470-95M170 615L900-75M-100 10L710 640" />
+                </g>
+                <g fill="none" stroke="#eef1ef" stroke-width="7">
+                  <path d="M-20 52H850M-20 347H850M-20 483H850M190-20V580M430-20V580M625-20V580" />
+                </g>
+                <path d="M300 50L395 65L415 150L340 205L245 164Z" fill="#e7e4ff" />
+                <path d="M510 275L650 288L690 380L540 445L458 364Z" fill="#ffe8e6" />
+                <path d="M65 310L172 303L230 364L200 475L75 443Z" fill="#dff4eb" />
+                <path class="map-route-shadow"
+                  d="M100 410 L100 290 Q100 270 120 270 H290 Q310 270 310 250 V135 Q310 115 330 115 H515 Q535 115 535 135 V250 Q535 270 555 270 H710"
+                  fill="none" stroke="#ffffff" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" />
+                <path class="map-route"
+                  d="M100 410 L100 290 Q100 270 120 270 H290 Q310 270 310 250 V135 Q310 115 330 115 H515 Q535 115 535 135 V250 Q535 270 555 270 H710"
+                  pathLength="100" fill="none" stroke="#5d57e8" stroke-width="8" stroke-linecap="round"
+                  stroke-linejoin="round" />
+                <path class="map-route-glint"
+                  d="M100 410 L100 290 Q100 270 120 270 H290 Q310 270 310 250 V135 Q310 115 330 115 H515 Q535 115 535 135 V250 Q535 270 555 270 H710"
+                  fill="none" stroke="#a9a4ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
+                  stroke-dasharray="8 22" />
+                <g class="route-stop" transform="translate(100 410)">
+                  <circle r="13" fill="#fff" stroke="#5d57e8" stroke-width="4" />
+                  <circle r="4" fill="#5d57e8" />
+                </g>
+                <g class="route-stop" transform="translate(710 270)">
+                  <circle r="15" fill="#fff" stroke="#5d57e8" stroke-width="4" />
+                  <path d="M-5-5 L6 0 L-5 5 Z" fill="#5d57e8" />
+                </g>
+                <g class="mark" tabindex="0" role="button" aria-label="Demonstração: ponto de apoio ilustrativo"
+                  data-spot="info" data-category="support" transform="translate(340 145)">
+                  <g class="mark-inner">
+                    <circle class="pulse" r="38" fill="#6f62ef" opacity=".14" />
+                    <circle class="mark-ring" r="22" fill="none" stroke="transparent" stroke-width="3" />
+                    <circle r="16" fill="#6057e6" stroke="white" stroke-width="5" />
+                    <path d="M0-6v7m0 6v.3" stroke="white" stroke-width="3" stroke-linecap="round" />
+                  </g>
+                </g>
+                <g class="mark" tabindex="0" role="button" aria-label="Demonstração: aviso ilustrativo"
+                  data-spot="attention" data-category="attention" transform="translate(571 350)">
+                  <g class="mark-inner">
+                    <circle class="pulse delayed" r="37" fill="#f17a75" opacity=".15" />
+                    <circle class="mark-ring" r="23" fill="none" stroke="transparent" stroke-width="3" />
+                    <circle r="17" fill="#e9666b" stroke="white" stroke-width="5" />
+                    <path d="M0-7v8m0 6v.4" stroke="white" stroke-width="3" stroke-linecap="round" />
+                  </g>
+                </g>
+                <g class="mark" tabindex="0" role="button" aria-label="Demonstração: referência útil ilustrativa"
+                  data-spot="source" data-category="support" transform="translate(138 379)">
+                  <g class="mark-inner">
+                    <circle class="pulse" r="35" fill="#55bd9c" opacity=".14" />
+                    <circle class="mark-ring" r="22" fill="none" stroke="transparent" stroke-width="3" />
+                    <circle r="16" fill="#35a583" stroke="white" stroke-width="5" />
+                    <path d="M-7 0l5 5 9-11" stroke="white" stroke-width="3" stroke-linecap="round" fill="none" />
+                  </g>
+                </g>
+              </svg>
+              <div class="map-control" aria-label="Zoom ilustrativo">
+                <button type="button" id="zoom-in" aria-label="Aumentar mapa">+</button>
+                <button type="button" id="zoom-out" aria-label="Diminuir mapa">−</button>
+              </div>
+            </div>
             <div class="map-tooltip" id="map-tooltip" aria-live="polite">
-              <span class="micro" style="color:var(--violet)">SELECIONE UM PONTO</span>
+              <span class="micro map-tooltip-label">VISUALIZAÇÃO ILUSTRATIVA</span>
               <strong>Explore o percurso</strong>
               <span>Escolha um marcador para conhecer os tipos de informação previstos para o Safejy.</span>
-            </div>
-            <div class="map-control" aria-label="Zoom ilustrativo">
-              <button type="button" id="zoom-in" aria-label="Aumentar mapa">+</button>
-              <button type="button" id="zoom-out" aria-label="Diminuir mapa">−</button>
             </div>
           </div>
         </div>
         <div class="map-disclaimer">
-          <span>ⓘ</span>
+          <span aria-hidden="true">ⓘ</span>
           <span><b>Importante:</b> este mapa demonstra a interface, não identifica regiões perigosas e não fornece
             orientação de emergência ou rotas reais. Notícias verificadas estão na seção seguinte.</span>
         </div>
@@ -437,7 +500,14 @@
     <section class="news cine-scene" id="noticias" data-scene="03">
       <div class="scene-backdrop" aria-hidden="true">
         <div class="scene-bg-layer scene-bg-overcast problem-zoom-bg">
-          <img src="assets/images/sp-avenue-overcast.jpg" alt="" loading="lazy" decoding="async">
+          <picture>
+            <source type="image/webp"
+              srcset="assets/images/sp-avenue-overcast-mobile.webp 768w, assets/images/sp-avenue-overcast.webp 1376w"
+              sizes="100vw">
+            <img src="assets/images/sp-avenue-overcast.jpg"
+              srcset="assets/images/sp-avenue-overcast-mobile.jpg 768w, assets/images/sp-avenue-overcast.jpg 1376w"
+              sizes="100vw" width="1376" height="768" alt="" loading="lazy" decoding="async">
+          </picture>
         </div>
         <div class="scene-mist-layer scene-mist-overcast problem-darken-layer"></div>
       </div>
@@ -446,7 +516,7 @@
         <div class="news-head">
           <div class="reveal">
             <span class="eyebrow">03 / Informação de verdade</span>
-            <h2 class="section-title">Notícias reais.<br>Fontes à vista<span style="color:var(--violet)">.</span></h2>
+            <h2 class="section-title">Notícias reais.<br>Fontes à vista<span class="title-accent">.</span></h2>
           </div>
           <p class="reveal" data-delay="1">Reportagens e informações públicas selecionadas sobre segurança e mobilidade
             no estado de São Paulo. Cada conteúdo tem fonte identificada, data e acesso à publicação original.</p>
@@ -534,7 +604,14 @@
     <section class="pitch cine-scene" id="visao" data-scene="07">
       <div class="scene-backdrop" aria-hidden="true">
         <div class="scene-bg-layer scene-bg-arbor" data-parallax-speed="-0.12">
-          <img src="assets/images/sp-arbor-avenue.jpg" alt="" loading="lazy" decoding="async">
+          <picture>
+            <source type="image/webp"
+              srcset="assets/images/sp-arbor-avenue-mobile.webp 768w, assets/images/sp-arbor-avenue.webp 1376w"
+              sizes="100vw">
+            <img src="assets/images/sp-arbor-avenue.jpg"
+              srcset="assets/images/sp-arbor-avenue-mobile.jpg 768w, assets/images/sp-arbor-avenue.jpg 1376w"
+              sizes="100vw" width="1376" height="768" alt="" loading="lazy" decoding="async">
+          </picture>
         </div>
         <div class="scene-light-rays"></div>
         <div class="scene-mist-layer scene-mist-arbor vision-closing-mist"></div>
@@ -545,7 +622,7 @@
           <span class="eyebrow">04 / Nossa visão</span>
           <h2 class="section-title">Informação<br>certa, no <span>momento<br>certo.</span></h2>
           <div class="pitch-end">
-            <span class="traffic"><i></i><i></i><i></i></span>
+            <span class="traffic" aria-hidden="true"><i></i><i></i><i></i></span>
             <span>Safejy · uma nova forma de olhar a cidade.</span>
           </div>
         </div>
@@ -563,8 +640,14 @@
     <div class="wrap">
       <div class="foot-grid">
         <a class="logo" href="#inicio" aria-label="Safejy: início">
-          <img class="logo-lockup logo-light" src="assets/images/logo-lockup.png" alt="Safejy">
-          <img class="logo-lockup logo-dark" src="assets/images/logo-lockup-dark.png" alt="Safejy">
+          <picture class="logo-picture logo-light">
+            <source srcset="assets/images/logo-lockup.webp" type="image/webp">
+            <img class="logo-lockup" src="assets/images/logo-lockup.png" alt="Safejy" width="679" height="178">
+          </picture>
+          <picture class="logo-picture logo-dark">
+            <source srcset="assets/images/logo-lockup-dark.webp" type="image/webp">
+            <img class="logo-lockup" src="assets/images/logo-lockup-dark.png" alt="Safejy" width="679" height="178">
+          </picture>
         </a>
         <div class="foot-links">
           <a href="#proposito">O problema</a>
@@ -580,16 +663,6 @@
       </div>
     </div>
   </footer>
-
-  <!-- UI Mínima Cinematográfica Fixa (Progresso Circular) -->
-  <button type="button" id="cinematic-scroll-ring" class="cinematic-scroll-ring"
-    aria-label="Progresso da leitura e voltar ao topo" title="Voltar ao início">
-    <svg viewBox="0 0 48 48" aria-hidden="true">
-      <circle class="ring-track" cx="24" cy="24" r="20" />
-      <circle class="ring-progress" cx="24" cy="24" r="20" />
-    </svg>
-    <span id="hud-scroll-pct" class="ring-pct">00</span>
-  </button>
 </body>
 
 </html>
