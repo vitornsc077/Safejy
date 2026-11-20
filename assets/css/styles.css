@@ -1212,11 +1212,6 @@ main:focus {
   border-color: #2f4636;
 }
 
-@keyframes cardfloat {
-  0%, 100% { transform: rotate(5deg) translateY(0); }
-  50% { transform: rotate(4deg) translateY(-10px); }
-}
-
 @keyframes map-pulse {
   0% { opacity: 0.65; transform: scale(1); }
   50% { opacity: 0.13; transform: scale(1.4); }
@@ -1232,39 +1227,10 @@ main:focus {
   to { stroke-dashoffset: -180; }
 }
 
-.mini-card {
-  position: absolute;
-  right: -20px;
-  bottom: 1px;
-  z-index: 4;
-  width: 192px;
-  background: #20242a;
-  color: #ffffff;
-  padding: 20px 18px;
-  border-radius: 13px;
-  box-shadow: 0 18px 45px rgba(24, 30, 40, 0.25);
-  transform: rotate(5deg);
-  animation: cardfloat 5s ease-in-out infinite;
-}
-
-.mini-card .micro { font-size: 0.72rem; color: #cfd4d8; display: block; }
-.mini-card .big-number { font-family: var(--display); font-size: 2.8125rem; font-weight: 700; line-height: 1.25; letter-spacing: -0.015em; }
-.mini-card .big-number-sub { font-size: 1.1875rem; color: #a9a7ff; }
-.mini-card small { font-family: var(--sans); font-size: 0.75rem; font-weight: 400; line-height: 1.4; color: #d3d9db; display: block; }
-.mini-card .bars { display: flex; align-items: flex-end; gap: 5px; height: 43px; margin-top: 6px; }
-.mini-card .bars span { display: block; width: 12px; border-radius: 3px 3px 0 0; background: #8582ef; opacity: 0.85; }
-.mini-card .bars span:nth-child(1) { height: 34%; }
-.mini-card .bars span:nth-child(2) { height: 62%; }
-.mini-card .bars span:nth-child(3) { height: 48%; }
-.mini-card .bars span:nth-child(4) { height: 89%; background: #f1b87a; }
-.mini-card .bars span:nth-child(5) { height: 68%; }
-.mini-card .bars span:nth-child(6) { height: 100%; background: #f17c7e; }
-
 .hero-note {
   position: absolute;
   left: 0;
   bottom: -10px;
-  max-width: calc(100% - 204px);
   font-family: var(--mono);
   font-size: 0.72rem;
   font-weight: 500;
@@ -2177,10 +2143,6 @@ main:focus {
   }
   .hero-art {
     min-height: 440px;
-    padding-right: 16px;
-  }
-  .mini-card {
-    right: -4px;
   }
   .divider-inner {
     grid-template-columns: 1fr;
@@ -2307,17 +2269,6 @@ main:focus {
   }
   .dash-map {
     min-height: 330px;
-  }
-  .mini-card {
-    width: 146px;
-    padding: 12px;
-    right: 2px;
-  }
-  .mini-card .big-number {
-    font-size: 2rem;
-  }
-  .mini-card .bars {
-    height: 24px;
   }
   .hero-note {
     left: 0;

@@ -101,8 +101,6 @@
     ['.float-tag.one span', 'Check the original source'],
     ['.float-tag.two strong', 'Useful references'],
     ['.float-tag.two span', 'Source information first'],
-    ['.mini-card .micro', 'VERIFIED INFORMATION'],
-    ['.mini-card small', 'Sources and information together in one place.'],
     ['.hero-note', '*Concept preview. Not a real risk map.'],
     ['.divider-cell:nth-child(1) strong', '01 / Understand'],
     ['.divider-cell:nth-child(1)>div>span', 'Before traveling or accepting a ride.'],
